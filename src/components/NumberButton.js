@@ -1,20 +1,12 @@
-import { useContext } from "react";
 import styled from "@emotion/styled";
-
 import Button from "../general/Button";
-import KeyinContext from "../contexts/KeyinContext";
 
-const NumberButtonJSX = ({ className, value }) => {
-  const { keyinHandler } = useContext(KeyinContext);
-
-  return (
-    <Button
-      className={`${className} ${value === 0 && "double-width"}`}
-      value={value}
-      onClick={() => console.log("hahahah")}
-    />
-  );
-};
+const NumberButtonJSX = ({ className, value }) => (
+  <Button
+    className={`${className} ${value === 0 && "double-width"}`}
+    value={value}
+  />
+);
 
 const NumberButton = styled(NumberButtonJSX)`
   width: 100%;

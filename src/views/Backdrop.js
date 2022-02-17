@@ -1,7 +1,10 @@
 import styled from "@emotion/styled";
 
 const BackdropJSX = ({ className, children }) => (
-  <div className={className}>{children}</div>
+  <div className={className}>
+    {console.log("[Backdrop] render")}
+    {children}
+  </div>
 );
 
 const Backdrop = styled(BackdropJSX)`

@@ -1,21 +1,9 @@
-import { useContext } from "react";
 import styled from "@emotion/styled";
-
 import Button from "../general/Button";
 
-import KeyinContext from "../contexts/KeyinContext";
-
-const MathOperatorButtonJSX = ({ className, value }) => {
-  const { keyinHandler } = useContext(KeyinContext);
-  const textValue = value;
-  return (
-    <Button
-      className={className}
-      value={value}
-      onClick={() => keyinHandler(textValue)}
-    />
-  );
-};
+const MathOperatorButtonJSX = ({ className, value }) => (
+  <Button className={className} value={value} />
+);
 
 const MathOperatorButton = styled(MathOperatorButtonJSX)`
   flex-grow: 1;

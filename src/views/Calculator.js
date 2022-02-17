@@ -6,8 +6,6 @@ import NumberButton from "../components/NumberButton";
 import MathOperatorButton from "../components/MathOperatorButton";
 import ControlButton from "../components/ControlButton";
 
-import KeyinContext from "../contexts/KeyinContext";
-
 const digits = [7, 8, 9, 4, 5, 6, 1, 2, 3, 0, "."];
 const mathOperators = [
   ["division", " \u00f7 "],
@@ -20,12 +18,14 @@ const controls = ["C", "AC", "\u00b1"];
 
 const CalculatorJSX = ({ className }) => {
   const [formula, setFormula] = useState("0");
-  // const [isRenewed, setIsRenewed] = useState(true)
+  // 按下 C 或 AC 後，回到初始狀態 isFirstUse = true
+  // 按下數字鍵和運算鍵，isFirstUse = false
+  const [isFirstUse, setIsFirstUse] = useState(true);
 
   const eraseKeyin = () => {
     console.log("erase keyin");
     setFormula("0");
-    // setIsRenewed(true)
+    setIsFirstUse(true);
   };
 
   const keyinHandler = (btnText) => {
@@ -35,17 +35,28 @@ const CalculatorJSX = ({ className }) => {
     }
 
     setFormula((prevFormula) => {
-      return `${prevFormula}${btnText}`;
-      // const isInputInvalid =
-      //   prevFormula.length === 2 &&
-      //   prevFormula[0] === "0" &&
-      //   prevFormula[1] !== ".";
-
-      // if (isInputInvalid) {
-      //   return prevFormula[1];
-      // } else {
-      //   return `${prevFormula}${btnText}`;
-      // }
+      switch (btnText) {
+        case ".":
+          // 處理使用者第一次就按 '.' 或第一次連續按 '.' 的狀況
+          if (isFirstUse || prevFormula === "0.") {
+            setIsFirstUse(false);
+            return "0.";
+          }
+          // 處理正常輸入後，連續按 '.' 的狀況 (例如 1.23....)
+          if (prevFormula.includes(".")) {
+            return prevFormula;
+          }
+        case "0":
+          // 處理使用者第一次就按 '0' 或第一次連續按 '0' 的狀況
+          if (isFirstUse) {
+            return "0";
+          }
+        default:
+          // 符合預期的輸入行為
+          setIsFirstUse(false);
+          // if (btnText === '=') {console.log('calculate!')}
+          return `${prevFormula}${btnText}`;
+      }
     });
   };
 
