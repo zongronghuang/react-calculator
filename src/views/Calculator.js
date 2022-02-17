@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, forwardRef } from "react";
 import styled from "@emotion/styled";
 
 import Display from "../components/Display";
@@ -11,7 +11,7 @@ const digits = [7, 8, 9, 4, 5, 6, 1, 2, 3, 0, "."];
 const mathOperators = [" ÷ ", " x ", " - ", " + ", " = "];
 const controls = ["C", "AC", "\u00b1"];
 
-const CalculatorJSX = ({ className }) => {
+const CalculatorJSX = ({ className }, ref) => {
   const [formula, setFormula] = useState("0");
   const [computedValue, setComputedValue] = useState("");
   const formulaCacheRef = useRef("");
@@ -78,7 +78,7 @@ const CalculatorJSX = ({ className }) => {
   };
 
   return (
-    <div className={`${className} calculator`}>
+    <div className={`${className} calculator`} ref={ref}>
       {console.log("[Calculator] render")}
 
       {/* 算式和算數結果顯示區域 */}
@@ -133,7 +133,7 @@ const CalculatorJSX = ({ className }) => {
   );
 };
 
-const Calculator = styled(CalculatorJSX)`
+const Calculator = styled(forwardRef(CalculatorJSX))`
   display: flex;
   flex-direction: column;
   width: 50rem;
