@@ -8,7 +8,7 @@ import ControlButton from "../components/ControlButton";
 import { computeValueFromFormula } from "../utils/output-helpers";
 
 const digits = [7, 8, 9, 4, 5, 6, 1, 2, 3, 0, "."];
-const mathOperators = [" ÷ ", " × ", " − ", " + ", " = "];
+const mathOperators = [" ÷ ", " x ", " - ", " + ", " = "];
 const controls = ["C", "AC", "\u00b1"];
 
 const CalculatorJSX = ({ className }) => {
@@ -16,7 +16,8 @@ const CalculatorJSX = ({ className }) => {
   const [computedValue, setComputedValue] = useState("");
 
   const getComputedValue = () => {
-    computeValueFromFormula(formula);
+    const result = computeValueFromFormula(formula);
+    setComputedValue(result);
   };
 
   const clearAll = () => {
@@ -49,9 +50,9 @@ const CalculatorJSX = ({ className }) => {
             afterOperator;
           return cannotAddDecimalDot ? prevFormula : `${prevFormula}${btnText}`;
         case " ÷ ":
-        case " − ":
+        case " - ":
         case " + ":
-        case " × ":
+        case " x ":
         case " = ":
           console.log("flow to operator");
           const cannotAddOperator = afterDecimalDot || afterOperator;
