@@ -5,57 +5,65 @@ import Display from "../components/Display";
 import NumberButton from "../components/NumberButton";
 import MathOperatorButton from "../components/MathOperatorButton";
 import ControlButton from "../components/ControlButton";
+import { computeValueFromFormula } from "../utils/output-helpers";
 
 const digits = [7, 8, 9, 4, 5, 6, 1, 2, 3, 0, "."];
-const mathOperators = [
-  ["division", " \u00f7 "],
-  ["multiplication", " \u00d7 "],
-  ["minus", " \u2212 "],
-  ["plus", " \u002b "],
-  ["equal", "\u003d"],
-];
+const mathOperators = [" ÷ ", " × ", " − ", " + ", " = "];
 const controls = ["C", "AC", "\u00b1"];
 
 const CalculatorJSX = ({ className }) => {
   const [formula, setFormula] = useState("0");
-  // 按下 C 或 AC 後，回到初始狀態 isFirstUse = true
-  // 按下數字鍵和運算鍵，isFirstUse = false
-  const [isFirstUse, setIsFirstUse] = useState(true);
+  const [computedValue, setComputedValue] = useState("");
+
+  const getComputedValue = () => {
+    computeValueFromFormula(formula);
+  };
+
+  const clearAll = () => {
+    setFormula("0");
+    setComputedValue("");
+  };
+
+  const clearCurrentInput = () => {};
 
   const eraseKeyin = () => {
     console.log("erase keyin");
     setFormula("0");
-    setIsFirstUse(true);
   };
 
   const keyinHandler = (btnText) => {
-    console.log({ btnText });
-    if (btnText === "=") {
-      return;
-    }
-
     setFormula((prevFormula) => {
+      console.log({ btnText, prevFormula });
+      const afterDecimalRegex = new RegExp(/\.\d+$/);
+      const afterDecimalDot = prevFormula.endsWith(".");
+      const afterOperator = prevFormula.endsWith(" ");
+      const endsWithSpaceZero = prevFormula.endsWith(" 0");
+      const hasOnlyOneZero = prevFormula.length === 1 && prevFormula[0] === "0";
+
       switch (btnText) {
         case ".":
-          // 處理使用者第一次就按 '.' 或第一次連續按 '.' 的狀況
-          if (isFirstUse || prevFormula === "0.") {
-            setIsFirstUse(false);
-            return "0.";
-          }
-          // 處理正常輸入後，連續按 '.' 的狀況 (例如 1.23....)
-          if (prevFormula.includes(".")) {
-            return prevFormula;
-          }
+          console.log("flow to dot");
+          const cannotAddDecimalDot =
+            afterDecimalRegex.test(prevFormula) ||
+            afterDecimalDot ||
+            afterOperator;
+          return cannotAddDecimalDot ? prevFormula : `${prevFormula}${btnText}`;
+        case " ÷ ":
+        case " − ":
+        case " + ":
+        case " × ":
+        case " = ":
+          console.log("flow to operator");
+          const cannotAddOperator = afterDecimalDot || afterOperator;
+          return cannotAddOperator ? prevFormula : `${prevFormula}${btnText}`;
         case "0":
-          // 處理使用者第一次就按 '0' 或第一次連續按 '0' 的狀況
-          if (isFirstUse) {
-            return "0";
-          }
+          console.log("flow to zero");
+          const cannotAddZero = hasOnlyOneZero || endsWithSpaceZero;
+          return cannotAddZero ? prevFormula : `${prevFormula}${btnText}`;
         default:
-          // 符合預期的輸入行為
-          setIsFirstUse(false);
-          // if (btnText === '=') {console.log('calculate!')}
-          return `${prevFormula}${btnText}`;
+          // 輸入 1-9 字元
+          console.log("flow to default");
+          return hasOnlyOneZero ? btnText : `${prevFormula}${btnText}`;
       }
     });
   };
@@ -68,7 +76,7 @@ const CalculatorJSX = ({ className }) => {
       <div className="calculator--displays">
         {console.log("[Display] render")}
         <Display content={formula} type="formula"></Display>
-        <Display type="result"></Display>
+        <Display content={computedValue} type="result"></Display>
       </div>
 
       {/* 鍵盤區域 */}
@@ -92,13 +100,17 @@ const CalculatorJSX = ({ className }) => {
 
         <div
           className="keypad--operators"
-          onClick={(e) => keyinHandler(e.target.value)}
+          onClick={(e) => {
+            const btn = e.target.value;
+
+            keyinHandler(e.target.value);
+            if (btn === " = ") {
+              getComputedValue();
+            }
+          }}
         >
           {mathOperators.map((operator, id) => (
-            <MathOperatorButton
-              key={`operator-${id}}`}
-              value={`${operator[1]}`}
-            />
+            <MathOperatorButton key={`operator-${id}}`} value={`${operator}`} />
           ))}
           {console.log("[Keypad Operators] render")}
         </div>
