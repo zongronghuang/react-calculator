@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import styled from "@emotion/styled";
 
 import Display from "../components/Display";
@@ -14,6 +14,7 @@ const controls = ["C", "AC", "\u00b1"];
 const CalculatorJSX = ({ className }) => {
   const [formula, setFormula] = useState("0");
   const [computedValue, setComputedValue] = useState("");
+  const formulaCacheRef = useRef("");
 
   const getComputedValue = () => {
     const result = computeValueFromFormula(formula);
@@ -22,14 +23,21 @@ const CalculatorJSX = ({ className }) => {
 
   const clearAll = () => {
     setFormula("0");
+    formulaCacheRef.current = "";
     setComputedValue("");
   };
 
-  const clearCurrentInput = () => {};
+  const clearCurrentInput = () => {
+    setFormula((prevFormula) => {
+      const splitFormula = prevFormula.split(" ");
+      const lastItemIndex = splitFormula.length - 1;
 
-  const eraseKeyin = () => {
-    console.log("erase keyin");
-    setFormula("0");
+      const newFormula = splitFormula.reduce((base, item, id) => {
+        return id === lastItemIndex ? base : `${base}${item} `;
+      }, "");
+
+      return newFormula;
+    });
   };
 
   const keyinHandler = (btnText) => {
@@ -82,7 +90,14 @@ const CalculatorJSX = ({ className }) => {
 
       {/* 鍵盤區域 */}
       <div className="calculator--keypad">
-        <div className="keypad--controls" onClick={eraseKeyin}>
+        <div
+          className="keypad--controls"
+          onClick={(e) => {
+            if (e.target.value === "AC") clearAll();
+            if (e.target.value === "C" && formula.endsWith(" = ")) clearAll();
+            if (e.target.value === "C") clearCurrentInput();
+          }}
+        >
           {controls.map((control, id) => (
             <ControlButton key={`control-${id}`} value={`${control}`} />
           ))}
@@ -102,10 +117,8 @@ const CalculatorJSX = ({ className }) => {
         <div
           className="keypad--operators"
           onClick={(e) => {
-            const btn = e.target.value;
-
             keyinHandler(e.target.value);
-            if (btn === " = ") {
+            if (e.target.value.trim() === "=") {
               getComputedValue();
             }
           }}

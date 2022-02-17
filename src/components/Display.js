@@ -15,16 +15,15 @@ const Display = styled(DisplayJSX)`
   width: 100%;
   height: 6.4rem;
   border: none;
-
   padding: 0 1.2rem;
-
   font-size: 4.4rem;
   text-align: right;
-  /* direction: rtl; */
   background-color: aquamarine;
 
   &.formula {
-    font-weight: 200;
+    height: 4.8rem;
+    font-size: 3.6rem;
+    font-weight: 100;
   }
 `;
 
