@@ -159,6 +159,7 @@ const Calculator = styled(forwardRef(CalculatorJSX))`
 
   overflow: hidden;
   background-color: pink;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
 
   .calculator--displays {
     display: flex;
