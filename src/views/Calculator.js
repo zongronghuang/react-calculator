@@ -155,6 +155,7 @@ const Calculator = styled(forwardRef(CalculatorJSX))`
   width: 50rem;
   height: 50rem;
 
+  outline: 1px solid black;
   border-radius: 10px;
 
   overflow: hidden;

@@ -9,6 +9,10 @@ const MathOperatorButton = styled(MathOperatorButtonJSX)`
   flex-grow: 1;
   width: 100%;
   background-color: orange;
+
+  &:active {
+    background-color: #e67e22;
+  }
 `;
 
 export default MathOperatorButton;

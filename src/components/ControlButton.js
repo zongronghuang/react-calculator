@@ -8,7 +8,11 @@ const ControlButtonJSX = ({ className, value }) => (
 const ControlButton = styled(ControlButtonJSX)`
   width: 33.33%;
   height: 100%;
-  background-color: lightblue;
+  background-color: #5d6d7e;
+
+  &:active {
+    background-color: #7f8c8d;
+  }
 `;
 
 export default ControlButton;

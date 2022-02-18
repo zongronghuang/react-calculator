@@ -13,6 +13,7 @@ const Button = styled(ButtonJSX)`
   height: 25%;
   border: none;
 
+  color: #f4f6f7;
   font-size: 3.6rem;
 
   outline: 1px solid black;
