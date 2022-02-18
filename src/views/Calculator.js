@@ -26,17 +26,32 @@ const CalculatorJSX = ({ className }, ref) => {
     formulaCacheRef.current = "";
     setComputedValue("");
   };
-
   const clearCurrentInput = () => {
+    setComputedValue("");
     setFormula((prevFormula) => {
       const splitFormula = prevFormula.split(" ");
-      const lastItemIndex = splitFormula.length - 1;
+      const lastItemId = splitFormula.length - 1;
+      const lastItem = splitFormula[lastItemId];
+      let newFormula = "";
 
-      const newFormula = splitFormula.reduce((base, item, id) => {
-        return id === lastItemIndex ? base : `${base}${item} `;
-      }, "");
+      // 最後一項是數字字串
+      if (lastItem !== "") {
+        newFormula = splitFormula.reduce((base, item, id) => {
+          return id === lastItemId ? base : `${base}${item} `;
+        }, "");
+      }
 
-      return newFormula;
+      // 最後一項是 ''，代表 formula 是以 operator 結束
+      if (lastItem === "") {
+        newFormula = splitFormula
+          .reduce((base, item, id) => {
+            return id >= lastItemId - 1 ? base : `${base}${item} `;
+          }, "")
+          .trimEnd();
+      }
+
+      // console.log({ newFormula });
+      return newFormula ? newFormula : "0";
     });
   };
 
@@ -94,7 +109,6 @@ const CalculatorJSX = ({ className }, ref) => {
           className="keypad--controls"
           onClick={(e) => {
             if (e.target.value === "AC") clearAll();
-            if (e.target.value === "C" && formula.endsWith(" = ")) clearAll();
             if (e.target.value === "C") clearCurrentInput();
           }}
         >
@@ -119,7 +133,9 @@ const CalculatorJSX = ({ className }, ref) => {
           onClick={(e) => {
             keyinHandler(e.target.value);
             if (e.target.value.trim() === "=") {
-              getComputedValue();
+              if (!formula.endsWith(" ")) {
+                getComputedValue();
+              } // 結尾是 operator
             }
           }}
         >
