@@ -5,6 +5,7 @@ import Display from "../components/Display";
 import NumberButton from "../components/NumberButton";
 import MathOperatorButton from "../components/MathOperatorButton";
 import ControlButton from "../components/ControlButton";
+import useKeyboardInput from "../hooks/useKeyboardInput";
 import { computeValueFromFormula } from "../utils/output-helpers";
 import {
   clearCurrentInputHelper,
@@ -20,7 +21,7 @@ const CalculatorJSX = ({ className }, ref) => {
   const [formula, setFormula] = useState("0");
   const [computedValue, setComputedValue] = useState("");
 
-  const getComputedValue = () => {
+  const getComputedValue = (formula) => {
     const result = computeValueFromFormula(formula);
     setComputedValue(result);
   };
@@ -42,6 +43,13 @@ const CalculatorJSX = ({ className }, ref) => {
   const keyinHandler = (btnText) => {
     setFormula((prevFormula) => keyinHelper(prevFormula, btnText));
   };
+
+  useKeyboardInput({
+    keyinHandler,
+    clearCurrentInput,
+    getComputedValue,
+    formula,
+  });
 
   useEffect(() => {
     // 如果 formula 上只有數字 => 未進行計算 => computedValue 不顯示
@@ -95,7 +103,7 @@ const CalculatorJSX = ({ className }, ref) => {
             keyinHandler(e.target.value);
             if (e.target.value.trim() === "=") {
               if (!formula.endsWith(" ")) {
-                getComputedValue();
+                getComputedValue(formula);
               } // 結尾是 operator
             }
           }}

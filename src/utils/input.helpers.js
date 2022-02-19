@@ -20,7 +20,6 @@ const clearCurrentInputHelper = (formula) => {
       .trimEnd();
   }
 
-  // console.log({ newFormula });
   return newFormula ? newFormula : "0";
 };
 
@@ -40,27 +39,21 @@ const negateLastNumberHelper = (formula) => {
     endsWithNegator;
 
   if (cannotNegateLastItem) {
-    console.log("cannot negate last item");
     return formula;
   }
 
   if (endsWithOperator) {
-    console.log("]]]]]]]]]]]", endsWithOperator);
     return formula + "-";
   }
 
-  console.log("========");
   // 結尾為非零的數字，非零的數字做成相反數
   if (!endsWithOperator) {
-    console.log("negate a number");
     const splitFormula = formula.split(" ");
     const lastItem = splitFormula[splitFormula.length - 1];
-
     const negatedNumberString = (-Number(lastItem)).toString();
-    console.log({ lastItem, negatedNumberString });
+
     splitFormula.pop();
     splitFormula.push(negatedNumberString);
-
     return splitFormula.join(" ");
   }
 };
@@ -78,7 +71,6 @@ const keyinHelper = (formula, btnText) => {
 
   switch (btnText) {
     case ".":
-      console.log("flow to dot");
       const cannotAddDecimalDot =
         endsWithDecimalNumber ||
         endsWithDecimalDot ||
@@ -90,7 +82,6 @@ const keyinHelper = (formula, btnText) => {
     case " + ":
     case " x ":
     case " = ":
-      console.log("flow to operator");
       const cannotAddOperator =
         endsWithDecimalDot ||
         endsWithOperator ||
@@ -98,7 +89,6 @@ const keyinHelper = (formula, btnText) => {
         endsWithNegator;
       return cannotAddOperator ? formula : `${formula}${btnText}`;
     case "0":
-      console.log("flow to zero");
       if (endsWithEqual) {
         return btnText;
       }
@@ -107,7 +97,6 @@ const keyinHelper = (formula, btnText) => {
       return cannotAddZero ? formula : `${formula}${btnText}`;
     default:
       // 輸入 1-9 字元
-      console.log("flow to default");
       if (endsWithEqual) {
         return btnText;
       }
