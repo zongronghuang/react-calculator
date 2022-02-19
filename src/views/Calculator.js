@@ -1,4 +1,4 @@
-import { useState, useRef, forwardRef } from "react";
+import { useState, useRef, forwardRef, useEffect } from "react";
 import styled from "@emotion/styled";
 
 import Display from "../components/Display";
@@ -9,7 +9,7 @@ import { computeValueFromFormula } from "../utils/output-helpers";
 
 const digits = [7, 8, 9, 4, 5, 6, 1, 2, 3, 0, "."];
 const mathOperators = [" ÷ ", " x ", " - ", " + ", " = "];
-const controls = ["C", "AC", "\u00b1"];
+const controls = ["C", "AC", "+/-"];
 
 const CalculatorJSX = ({ className }, ref) => {
   const [formula, setFormula] = useState("0");
@@ -26,6 +26,7 @@ const CalculatorJSX = ({ className }, ref) => {
     formulaCacheRef.current = "";
     setComputedValue("");
   };
+
   const clearCurrentInput = () => {
     setComputedValue("");
     setFormula((prevFormula) => {
@@ -55,22 +56,69 @@ const CalculatorJSX = ({ className }, ref) => {
     });
   };
 
+  const negateLastNumber = () => {
+    setFormula((prevFormula) => {
+      const isOneZero = prevFormula === "0";
+      const endsWithSpaceZero = prevFormula.endsWith(" 0");
+      const endsWithNegator = prevFormula.endsWith("-");
+      const endsWithEqual = prevFormula.endsWith(" = ");
+      const endsWithZeroDecimal = new RegExp(/0\.0*$/).test(prevFormula);
+      const endsWithOperator = new RegExp(/\s[+x÷-]\s$/).test(prevFormula);
+
+      const cannotNegateLastItem =
+        isOneZero ||
+        endsWithSpaceZero ||
+        endsWithZeroDecimal ||
+        endsWithEqual ||
+        endsWithNegator;
+
+      if (cannotNegateLastItem) {
+        console.log("cannot negate last item");
+        return prevFormula;
+      }
+
+      if (endsWithOperator) {
+        console.log("]]]]]]]]]]]", endsWithOperator);
+        return prevFormula + "-";
+      }
+
+      console.log("========");
+      // 結尾為非零的數字，非零的數字做成相反數
+      if (!endsWithOperator) {
+        console.log("negate a number");
+        const splitFormula = prevFormula.split(" ");
+        const lastItem = splitFormula[splitFormula.length - 1];
+
+        const negatedNumberString = (-Number(lastItem)).toString();
+        console.log({ lastItem, negatedNumberString });
+        splitFormula.pop();
+        splitFormula.push(negatedNumberString);
+
+        return splitFormula.join(" ");
+      }
+    });
+  };
+
   const keyinHandler = (btnText) => {
     setFormula((prevFormula) => {
       console.log({ btnText, prevFormula });
-      const afterDecimalRegex = new RegExp(/\.\d+$/);
-      const afterDecimalDot = prevFormula.endsWith(".");
-      const afterOperator = prevFormula.endsWith(" ");
+
+      const endsWithDecimalDot = prevFormula.endsWith(".");
+      const endsWithOperator = new RegExp(/\s[+x÷-]\s$/).test(prevFormula);
+      const endsWithNegator = prevFormula.endsWith("-");
       const endsWithSpaceZero = prevFormula.endsWith(" 0");
       const hasOnlyOneZero = prevFormula.length === 1 && prevFormula[0] === "0";
+      const endsWithEqual = prevFormula.endsWith(" = ");
+      const endsWithDecimalNumber = new RegExp(/\.\d+$/).test(prevFormula);
 
       switch (btnText) {
         case ".":
           console.log("flow to dot");
           const cannotAddDecimalDot =
-            afterDecimalRegex.test(prevFormula) ||
-            afterDecimalDot ||
-            afterOperator;
+            endsWithDecimalNumber ||
+            endsWithDecimalDot ||
+            endsWithOperator ||
+            endsWithEqual;
           return cannotAddDecimalDot ? prevFormula : `${prevFormula}${btnText}`;
         case " ÷ ":
         case " - ":
@@ -78,19 +126,38 @@ const CalculatorJSX = ({ className }, ref) => {
         case " x ":
         case " = ":
           console.log("flow to operator");
-          const cannotAddOperator = afterDecimalDot || afterOperator;
+          const cannotAddOperator =
+            endsWithDecimalDot ||
+            endsWithOperator ||
+            endsWithEqual ||
+            endsWithNegator;
           return cannotAddOperator ? prevFormula : `${prevFormula}${btnText}`;
         case "0":
           console.log("flow to zero");
+          if (endsWithEqual) {
+            return btnText;
+          }
+
           const cannotAddZero = hasOnlyOneZero || endsWithSpaceZero;
           return cannotAddZero ? prevFormula : `${prevFormula}${btnText}`;
         default:
           // 輸入 1-9 字元
           console.log("flow to default");
+          if (endsWithEqual) {
+            return btnText;
+          }
           return hasOnlyOneZero ? btnText : `${prevFormula}${btnText}`;
       }
     });
   };
+
+  useEffect(() => {
+    // 如果 formula 上只有數字 => 未進行計算 => computedValue 不顯示
+    // 用來處理計算完一個算式後，再進行其他計算時，上一個算式的 computedValue 應該移除
+    if (!Number.isNaN(+formula)) {
+      setComputedValue("");
+    }
+  }, [formula]);
 
   return (
     <div className={`${className} calculator`} ref={ref}>
@@ -108,8 +175,10 @@ const CalculatorJSX = ({ className }, ref) => {
         <div
           className="keypad--controls"
           onClick={(e) => {
-            if (e.target.value === "AC") clearAll();
-            if (e.target.value === "C") clearCurrentInput();
+            const btnText = e.target.value;
+            if (btnText === "AC") clearAll();
+            if (btnText === "C") clearCurrentInput();
+            if (btnText === "+/-") negateLastNumber();
           }}
         >
           {controls.map((control, id) => (
