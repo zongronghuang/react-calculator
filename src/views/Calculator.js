@@ -1,4 +1,4 @@
-import { useState, useRef, forwardRef, useEffect } from "react";
+import { useState, forwardRef, useEffect } from "react";
 import styled from "@emotion/styled";
 
 import Display from "../components/Display";
@@ -6,6 +6,11 @@ import NumberButton from "../components/NumberButton";
 import MathOperatorButton from "../components/MathOperatorButton";
 import ControlButton from "../components/ControlButton";
 import { computeValueFromFormula } from "../utils/output-helpers";
+import {
+  clearCurrentInputHelper,
+  negateLastNumberHelper,
+  keyinHelper,
+} from "../utils/input.helpers";
 
 const digits = [7, 8, 9, 4, 5, 6, 1, 2, 3, 0, "."];
 const mathOperators = [" ÷ ", " x ", " - ", " + ", " = "];
@@ -14,7 +19,6 @@ const controls = ["C", "AC", "+/-"];
 const CalculatorJSX = ({ className }, ref) => {
   const [formula, setFormula] = useState("0");
   const [computedValue, setComputedValue] = useState("");
-  const formulaCacheRef = useRef("");
 
   const getComputedValue = () => {
     const result = computeValueFromFormula(formula);
@@ -23,132 +27,20 @@ const CalculatorJSX = ({ className }, ref) => {
 
   const clearAll = () => {
     setFormula("0");
-    formulaCacheRef.current = "";
     setComputedValue("");
   };
 
   const clearCurrentInput = () => {
     setComputedValue("");
-    setFormula((prevFormula) => {
-      const splitFormula = prevFormula.split(" ");
-      const lastItemId = splitFormula.length - 1;
-      const lastItem = splitFormula[lastItemId];
-      let newFormula = "";
-
-      // 最後一項是數字字串
-      if (lastItem !== "") {
-        newFormula = splitFormula.reduce((base, item, id) => {
-          return id === lastItemId ? base : `${base}${item} `;
-        }, "");
-      }
-
-      // 最後一項是 ''，代表 formula 是以 operator 結束
-      if (lastItem === "") {
-        newFormula = splitFormula
-          .reduce((base, item, id) => {
-            return id >= lastItemId - 1 ? base : `${base}${item} `;
-          }, "")
-          .trimEnd();
-      }
-
-      // console.log({ newFormula });
-      return newFormula ? newFormula : "0";
-    });
+    setFormula((prevFormula) => clearCurrentInputHelper(prevFormula));
   };
 
   const negateLastNumber = () => {
-    setFormula((prevFormula) => {
-      const isOneZero = prevFormula === "0";
-      const endsWithSpaceZero = prevFormula.endsWith(" 0");
-      const endsWithNegator = prevFormula.endsWith("-");
-      const endsWithEqual = prevFormula.endsWith(" = ");
-      const endsWithZeroDecimal = new RegExp(/0\.0*$/).test(prevFormula);
-      const endsWithOperator = new RegExp(/\s[+x÷-]\s$/).test(prevFormula);
-
-      const cannotNegateLastItem =
-        isOneZero ||
-        endsWithSpaceZero ||
-        endsWithZeroDecimal ||
-        endsWithEqual ||
-        endsWithNegator;
-
-      if (cannotNegateLastItem) {
-        console.log("cannot negate last item");
-        return prevFormula;
-      }
-
-      if (endsWithOperator) {
-        console.log("]]]]]]]]]]]", endsWithOperator);
-        return prevFormula + "-";
-      }
-
-      console.log("========");
-      // 結尾為非零的數字，非零的數字做成相反數
-      if (!endsWithOperator) {
-        console.log("negate a number");
-        const splitFormula = prevFormula.split(" ");
-        const lastItem = splitFormula[splitFormula.length - 1];
-
-        const negatedNumberString = (-Number(lastItem)).toString();
-        console.log({ lastItem, negatedNumberString });
-        splitFormula.pop();
-        splitFormula.push(negatedNumberString);
-
-        return splitFormula.join(" ");
-      }
-    });
+    setFormula((prevFormula) => negateLastNumberHelper(prevFormula));
   };
 
   const keyinHandler = (btnText) => {
-    setFormula((prevFormula) => {
-      console.log({ btnText, prevFormula });
-
-      const endsWithDecimalDot = prevFormula.endsWith(".");
-      const endsWithOperator = new RegExp(/\s[+x÷-]\s$/).test(prevFormula);
-      const endsWithNegator = prevFormula.endsWith("-");
-      const endsWithSpaceZero = prevFormula.endsWith(" 0");
-      const hasOnlyOneZero = prevFormula.length === 1 && prevFormula[0] === "0";
-      const endsWithEqual = prevFormula.endsWith(" = ");
-      const endsWithDecimalNumber = new RegExp(/\.\d+$/).test(prevFormula);
-
-      switch (btnText) {
-        case ".":
-          console.log("flow to dot");
-          const cannotAddDecimalDot =
-            endsWithDecimalNumber ||
-            endsWithDecimalDot ||
-            endsWithOperator ||
-            endsWithEqual;
-          return cannotAddDecimalDot ? prevFormula : `${prevFormula}${btnText}`;
-        case " ÷ ":
-        case " - ":
-        case " + ":
-        case " x ":
-        case " = ":
-          console.log("flow to operator");
-          const cannotAddOperator =
-            endsWithDecimalDot ||
-            endsWithOperator ||
-            endsWithEqual ||
-            endsWithNegator;
-          return cannotAddOperator ? prevFormula : `${prevFormula}${btnText}`;
-        case "0":
-          console.log("flow to zero");
-          if (endsWithEqual) {
-            return btnText;
-          }
-
-          const cannotAddZero = hasOnlyOneZero || endsWithSpaceZero;
-          return cannotAddZero ? prevFormula : `${prevFormula}${btnText}`;
-        default:
-          // 輸入 1-9 字元
-          console.log("flow to default");
-          if (endsWithEqual) {
-            return btnText;
-          }
-          return hasOnlyOneZero ? btnText : `${prevFormula}${btnText}`;
-      }
-    });
+    setFormula((prevFormula) => keyinHelper(prevFormula, btnText));
   };
 
   useEffect(() => {
