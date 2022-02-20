@@ -85,58 +85,63 @@ const CalculatorJSX = ({ className }, ref) => {
   }, [formula]);
 
   return (
-    <div className={`${className} calculator`} ref={ref}>
-      {console.log("[Calculator] render")}
+    <div className={`${className} calculator-container`} ref={ref}>
+      <div className="calculator">
+        {console.log("[Calculator] render")}
 
-      {/* 算式和算數結果顯示區域 */}
-      <div className="calculator--displays">
-        {console.log("[Display] render")}
-        <Display content={formula} type="formula"></Display>
-        <Display content={computedValue} type="result"></Display>
-      </div>
-
-      {/* 鍵盤區域 */}
-      <div className="calculator--keypad">
-        <div
-          className="keypad--controls"
-          onClick={(e) => {
-            const btnText = e.target.value;
-            if (btnText === "AC") clearAll();
-            if (btnText === "C") clearCurrentInput();
-            if (btnText === "+/-") negateLastNumber();
-          }}
-        >
-          {controls.map((control, id) => (
-            <ControlButton key={`control-${id}`} value={`${control}`} />
-          ))}
-          {console.log("[Keypad Controls] render")}
+        {/* 算式和算數結果顯示區域 */}
+        <div className="calculator--displays">
+          {console.log("[Display] render")}
+          <Display content={formula} type="formula"></Display>
+          <Display content={computedValue} type="result"></Display>
         </div>
 
-        <div
-          className="keypad--numbers"
-          onClick={(e) => keyinHandler(e.target.value)}
-        >
-          {digits.map((digit, id) => (
-            <NumberButton key={`digit-${id}`} value={digit} />
-          ))}
-          {console.log("[Keypad Numbers] render")}
-        </div>
+        {/* 鍵盤區域 */}
+        <div className="calculator--keypad">
+          <div
+            className="keypad--controls"
+            onClick={(e) => {
+              const btnText = e.target.value;
+              if (btnText === "AC") clearAll();
+              if (btnText === "C") clearCurrentInput();
+              if (btnText === "+/-") negateLastNumber();
+            }}
+          >
+            {controls.map((control, id) => (
+              <ControlButton key={`control-${id}`} value={`${control}`} />
+            ))}
+            {console.log("[Keypad Controls] render")}
+          </div>
 
-        <div
-          className="keypad--operators"
-          onClick={(e) => {
-            keyinHandler(e.target.value);
-            if (e.target.value.trim() === "=") {
-              if (!formula.endsWith(" ")) {
-                getComputedValue(formula);
-              } // 結尾是 operator
-            }
-          }}
-        >
-          {mathOperators.map((operator, id) => (
-            <MathOperatorButton key={`operator-${id}}`} value={`${operator}`} />
-          ))}
-          {console.log("[Keypad Operators] render")}
+          <div
+            className="keypad--numbers"
+            onClick={(e) => keyinHandler(e.target.value)}
+          >
+            {digits.map((digit, id) => (
+              <NumberButton key={`digit-${id}`} value={digit} />
+            ))}
+            {console.log("[Keypad Numbers] render")}
+          </div>
+
+          <div
+            className="keypad--operators"
+            onClick={(e) => {
+              keyinHandler(e.target.value);
+              if (e.target.value.trim() === "=") {
+                if (!formula.endsWith(" ")) {
+                  getComputedValue(formula);
+                } // 結尾是 operator
+              }
+            }}
+          >
+            {mathOperators.map((operator, id) => (
+              <MathOperatorButton
+                key={`operator-${id}}`}
+                value={`${operator}`}
+              />
+            ))}
+            {console.log("[Keypad Operators] render")}
+          </div>
         </div>
       </div>
     </div>
@@ -144,17 +149,19 @@ const CalculatorJSX = ({ className }, ref) => {
 };
 
 const Calculator = styled(forwardRef(CalculatorJSX))`
-  display: flex;
-  flex-direction: column;
   width: 50rem;
   height: 50rem;
-
-  outline: 1px solid black;
-  border-radius: 10px;
-
   overflow: hidden;
   background-color: pink;
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+  outline: 1px solid black;
+  border-radius: 10px;
+
+  .calculator {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
 
   .calculator--displays {
     display: flex;
@@ -195,6 +202,15 @@ const Calculator = styled(forwardRef(CalculatorJSX))`
     flex-direction: column;
 
     background-color: purple;
+  }
+
+  /* ------------------ */
+  /* MEDIA QUERIES */
+  /* TABLET 768px */
+  @media (max-width: 48em) {
+    width: 100%;
+    height: 50%;
+    overflow-y: auto;
   }
 `;
 
