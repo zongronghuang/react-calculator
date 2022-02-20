@@ -104,6 +104,13 @@ const keyinHelper = (formula, btnText) => {
       if (endsWithEqual) {
         return btnText;
       }
+
+      if (endsWithSpaceZero) {
+        const splitFormula = formula.split(" ");
+        splitFormula.pop();
+        splitFormula.push(btnText);
+        return splitFormula.join(" ");
+      }
       return hasOnlyOneZero ? btnText : `${formula}${btnText}`;
   }
 };
