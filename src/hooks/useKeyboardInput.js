@@ -1,15 +1,11 @@
 import { useEffect } from "react";
 import { normalizeOperatorsHelper } from "../utils/input.helpers";
 
-const useKeyboardInput = ({
-  keyinHandler,
-  clearCurrentInput,
-  getComputedValue,
-  formula,
-}) => {
-  console.log("use custom hook", { formula });
+const useKeyboardInput = ({ keyinHandler, clearCurrentInput }) => {
+  console.log("use custom hook");
 
   const keydownHandler = (e) => {
+    console.log("[GET Key]");
     const keyText = e.key;
     const acceptedKeys = [
       "1",
@@ -35,19 +31,14 @@ const useKeyboardInput = ({
     if (!acceptedKeys.includes(keyText)) {
       return;
     }
-    console.log("-----", { keyText });
+
     switch (keyText) {
       case "Clear":
       case "Backspace":
-        console.log("[Custom] Clear");
         clearCurrentInput();
         break;
       case "=":
       case "Enter":
-        console.log("[Custom] Equal", { formula });
-        keyinHandler(normalizeOperatorsHelper(keyText));
-        getComputedValue(formula);
-        break;
       case "+":
       case "-":
       case "*":
@@ -63,7 +54,7 @@ const useKeyboardInput = ({
       case "8":
       case "9":
       case ".":
-        console.log("[Custom] Equal");
+        console.log("[Custom] digits & operators");
         keyinHandler(normalizeOperatorsHelper(keyText));
         break;
       default:
@@ -73,11 +64,9 @@ const useKeyboardInput = ({
   };
 
   useEffect(() => {
-    console.log("[Custom] Add", { formula });
     window.addEventListener("keydown", keydownHandler);
 
     return () => {
-      console.log("[Custom] Remove", { formula });
       window.removeEventListener("keydown", keydownHandler);
     };
   }, []);

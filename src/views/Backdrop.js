@@ -9,6 +9,7 @@ const BackdropJSX = ({ className, children }, ref) => (
 );
 
 const Backdrop = styled(forwardRef(BackdropJSX))`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;

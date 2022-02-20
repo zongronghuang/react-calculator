@@ -1,11 +1,11 @@
-import { useState, forwardRef, useEffect } from "react";
+import { useState, forwardRef, useEffect, useCallback } from "react";
 import styled from "@emotion/styled";
 
 import Display from "../components/Display";
 import NumberButton from "../components/NumberButton";
 import MathOperatorButton from "../components/MathOperatorButton";
 import ControlButton from "../components/ControlButton";
-import useKeyboardInput from "../hooks/useKeyboardInput";
+// import useKeyboardInput from "../hooks/useKeyboardInput";
 import { computeValueFromFormula } from "../utils/output-helpers";
 import {
   clearCurrentInputHelper,
@@ -24,36 +24,37 @@ const CalculatorJSX = ({ className }, ref) => {
   console.log("[APP RENDER]", { formula, computedValue });
 
   const getComputedValue = (formula) => {
-    console.log("get computed value []", formula);
+    console.log("getComputedValue", { formula });
     const result = computeValueFromFormula(formula);
     setComputedValue((prevValue) => result);
   };
 
   const clearAll = () => {
     setFormula((prevFormula) => {
-      console.log("clear all", { prevFormula });
       return "0";
     });
     setComputedValue((prevValue) => {
-      console.log("clear all", { prevValue });
       return "";
     });
   };
 
   const clearCurrentInput = () => {
     setComputedValue((prevValue) => {
-      console.log("clear current input", { prevValue });
       return "";
     });
     setFormula((prevFormula) => {
-      console.log(
-        "clear current input",
-        { prevFormula },
-        clearCurrentInputHelper(prevFormula)
-      );
       return clearCurrentInputHelper(prevFormula);
     });
   };
+
+  // const clearCurrentInput = useCallback(() => {
+  //   setComputedValue((prevValue) => {
+  //     return "";
+  //   });
+  //   setFormula((prevFormula) => {
+  //     return clearCurrentInputHelper(prevFormula);
+  //   });
+  // }, []);
 
   const negateLastNumber = () => {
     setFormula((prevFormula) => negateLastNumberHelper(prevFormula));
@@ -61,26 +62,32 @@ const CalculatorJSX = ({ className }, ref) => {
 
   const keyinHandler = (btnText) => {
     setFormula((prevFormula) => {
-      console.log(
-        "keyin handler",
-        { prevFormula },
-        keyinHelper(prevFormula, btnText)
-      );
+      console.log("KEYIN handler", { prevFormula, btnText });
       return keyinHelper(prevFormula, btnText);
     });
   };
 
-  useKeyboardInput({
-    keyinHandler,
-    clearCurrentInput,
-    getComputedValue,
-    formula,
-  });
+  // const keyinHandler = useCallback((btnText) => {
+  //   setFormula((prevFormula) => {
+  //     console.log("KEYIN handler", { prevFormula, btnText });
+  //     return keyinHelper(prevFormula, btnText);
+  //   });
+  // }, []);
+
+  // useKeyboardInput({
+  //   keyinHandler,
+  //   clearCurrentInput,
+  // });
+
+  // useEffect(() => {
+  //   if (formula.endsWith(" = ")) {
+  //     getComputedValue(formula);
+  //   }
+  // }, [formula]);
 
   useEffect(() => {
     // 如果 formula 上只有數字 => 未進行計算 => computedValue 不顯示
     // 用來處理計算完一個算式後，再進行其他計算時，上一個算式的 computedValue 應該移除
-    console.log("[UseEffect] calculator", { formula });
     if (!Number.isNaN(+formula)) {
       setComputedValue((prevValue) => "");
     }
@@ -132,7 +139,7 @@ const CalculatorJSX = ({ className }, ref) => {
               if (e.target.value.trim() === "=") {
                 if (!formula.endsWith(" ")) {
                   getComputedValue(formula);
-                } // 結尾是 operator
+                } // 結尾不是 operator
               }
             }}
           >

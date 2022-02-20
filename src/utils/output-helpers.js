@@ -22,11 +22,11 @@ const removeTrailingDecimalZeros = (string) => {
 
 const computeValueFromFormula = (formula) => {
   // 清除 formula 中不需要的字元並轉換字元
+  // replace 方法用 RegExp + flag g 才會全部取代，否則只取代一次
   const processedFormula = formula
-    .replace(" = ", "")
-    .replace("x", "*")
-    .replace("÷", "/");
-  console.log("compute value from formula", { formula });
+    .replace(/\s=\s$/, "")
+    .replace(/x/g, "*")
+    .replace(/÷/g, "/");
   const convertedValue = eval(processedFormula);
 
   // too big

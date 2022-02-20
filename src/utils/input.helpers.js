@@ -59,7 +59,7 @@ const negateLastNumberHelper = (formula) => {
 };
 
 const keyinHelper = (formula, btnText) => {
-  console.log({ btnText, formula });
+  console.log({ formula, btnText });
 
   const endsWithDecimalDot = formula.endsWith(".");
   const endsWithOperator = new RegExp(/\s[+x÷-]\s$/).test(formula);
@@ -88,7 +88,12 @@ const keyinHelper = (formula, btnText) => {
         endsWithOperator ||
         endsWithEqual ||
         endsWithNegator;
-      console.log("keyinHelper [+-/*]", { formula });
+      console.log(
+        "keyinHelper [+-/*=]",
+        { formula },
+        "to return",
+        cannotAddOperator ? formula : `${formula}${btnText}`
+      );
       return cannotAddOperator ? formula : `${formula}${btnText}`;
     case "0":
       if (endsWithEqual) {
@@ -107,8 +112,7 @@ const keyinHelper = (formula, btnText) => {
 
       if (endsWithSpaceZero) {
         const splitFormula = formula.split(" ");
-        splitFormula.pop();
-        splitFormula.push(btnText);
+        splitFormula[splitFormula.length - 1] = btnText;
         return splitFormula.join(" ");
       }
       return hasOnlyOneZero ? btnText : `${formula}${btnText}`;
@@ -125,7 +129,7 @@ const normalizeOperatorsHelper = (keyText) => {
     "/": " ÷ ",
   };
 
-  console.log("[]", { keyText, display: keyMappings[keyText] });
+  console.log("[Normalize]", { keyText, display: keyMappings[keyText] });
   return keyMappings[keyText] ? keyMappings[keyText] : keyText;
 };
 
