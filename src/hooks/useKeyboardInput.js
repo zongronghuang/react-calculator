@@ -35,7 +35,7 @@ const useKeyboardInput = ({
     if (!acceptedKeys.includes(keyText)) {
       return;
     }
-
+    console.log("-----", { keyText });
     switch (keyText) {
       case "Clear":
       case "Backspace":
@@ -80,7 +80,7 @@ const useKeyboardInput = ({
       console.log("[Custom] Remove", { formula });
       window.removeEventListener("keydown", keydownHandler);
     };
-  }, [formula]);
+  }, []);
 };
 
 export default useKeyboardInput;

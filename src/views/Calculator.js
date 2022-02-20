@@ -21,6 +21,8 @@ const CalculatorJSX = ({ className }, ref) => {
   const [formula, setFormula] = useState("0");
   const [computedValue, setComputedValue] = useState("");
 
+  console.log("[APP RENDER]", { formula, computedValue });
+
   const getComputedValue = (formula) => {
     console.log("get computed value []", formula);
     const result = computeValueFromFormula(formula);
@@ -87,11 +89,11 @@ const CalculatorJSX = ({ className }, ref) => {
   return (
     <div className={`${className} calculator-container`} ref={ref}>
       <div className="calculator">
-        {console.log("[Calculator] render")}
+        {/* {console.log("[Calculator] render")} */}
 
         {/* 算式和算數結果顯示區域 */}
         <div className="calculator--displays">
-          {console.log("[Display] render")}
+          {/* {console.log("[Display] render")} */}
           <Display content={formula} type="formula"></Display>
           <Display content={computedValue} type="result"></Display>
         </div>
@@ -110,7 +112,7 @@ const CalculatorJSX = ({ className }, ref) => {
             {controls.map((control, id) => (
               <ControlButton key={`control-${id}`} value={`${control}`} />
             ))}
-            {console.log("[Keypad Controls] render")}
+            {/* {console.log("[Keypad Controls] render")} */}
           </div>
 
           <div
@@ -120,7 +122,7 @@ const CalculatorJSX = ({ className }, ref) => {
             {digits.map((digit, id) => (
               <NumberButton key={`digit-${id}`} value={digit} />
             ))}
-            {console.log("[Keypad Numbers] render")}
+            {/* {console.log("[Keypad Numbers] render")} */}
           </div>
 
           <div
@@ -140,7 +142,7 @@ const CalculatorJSX = ({ className }, ref) => {
                 value={`${operator}`}
               />
             ))}
-            {console.log("[Keypad Operators] render")}
+            {/* {console.log("[Keypad Operators] render")} */}
           </div>
         </div>
       </div>

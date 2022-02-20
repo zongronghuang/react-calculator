@@ -1,70 +1,69 @@
-# Getting Started with Create React App
+# React Calculator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Demo](Demo.png)
 
-## Available Scripts
+## 啟動 React Calculator
 
-In the project directory, you can run:
+下載此專案後，輸入下列指令安裝所需套件：
 
-### `npm start`
+> `npm install`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+啟動 React Calculator：
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+> `npm start`
 
-### `npm test`
+即可透過網頁瀏覽器使用。
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 使用說明
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 可用滑鼠拖放
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+透過滑鼠即可將計算機移動至不同的位置，方便使用。
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 雙重顯示螢幕
 
-### `npm run eject`
+- 上方螢幕：顯示輸入的算式，方便您確認算式是否正確
+- 下方螢幕：顯示得出的數值
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 多種功能按鍵
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **C**：清除所得數值，並清除算式內最後輸入的數字或數學運算子
+- **AC**：清除算式及所得數值
+- **+/-**：為算式內最後輸入的數字加上負號
+- **+**、**-**、**x** 及 **÷**：數學運算子
+- **=**：得出算式數值
+- 數字 **0** - **9**：輸入數字
+- **.**：小數點
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 提供滑鼠介面
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+滑鼠：可使用上述所有按鍵。點按時，按鍵顏色會改變，作為視覺提示。
 
-## Learn More
+### 提供鍵盤介面
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+功能對應按鍵如下：
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **Clear** 或 **Backspace**：清除所得數值，並清除算式內最後輸入的數字或數學運算子
+- **+**、**-**、**\*** 及 **/**：數學運算子
+- **=** 或 **Enter**：得出算式數值
+- 數字 **0** - **9**：輸入數字
+- **.**：小數點
+  > 未提供對應於 **AC** (清除算式及所得數值) 和 **+/-** (為算式內最後輸入的數字加上負號) 的鍵盤功能。
 
-### Code Splitting
+### 適應不同大小裝置
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+可在一般桌面電腦及行動裝置上使用。
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 功能限制
 
-### Making a Progressive Web App
+算式可得出的最大數值為 2^32。超過此數值則顯示 **NUMBER TOO BIG**。
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## 專案技術
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+採用 React 17 及 Emotion.js (建立 styled component)，以 function component、內建 Hook 及 custom Hook 進行實作。
