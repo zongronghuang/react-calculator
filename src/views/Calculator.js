@@ -22,18 +22,35 @@ const CalculatorJSX = ({ className }, ref) => {
   const [computedValue, setComputedValue] = useState("");
 
   const getComputedValue = (formula) => {
+    console.log("get computed value []", formula);
     const result = computeValueFromFormula(formula);
-    setComputedValue(result);
+    setComputedValue((prevValue) => result);
   };
 
   const clearAll = () => {
-    setFormula("0");
-    setComputedValue("");
+    setFormula((prevFormula) => {
+      console.log("clear all", { prevFormula });
+      return "0";
+    });
+    setComputedValue((prevValue) => {
+      console.log("clear all", { prevValue });
+      return "";
+    });
   };
 
   const clearCurrentInput = () => {
-    setComputedValue("");
-    setFormula((prevFormula) => clearCurrentInputHelper(prevFormula));
+    setComputedValue((prevValue) => {
+      console.log("clear current input", { prevValue });
+      return "";
+    });
+    setFormula((prevFormula) => {
+      console.log(
+        "clear current input",
+        { prevFormula },
+        clearCurrentInputHelper(prevFormula)
+      );
+      return clearCurrentInputHelper(prevFormula);
+    });
   };
 
   const negateLastNumber = () => {
@@ -41,7 +58,14 @@ const CalculatorJSX = ({ className }, ref) => {
   };
 
   const keyinHandler = (btnText) => {
-    setFormula((prevFormula) => keyinHelper(prevFormula, btnText));
+    setFormula((prevFormula) => {
+      console.log(
+        "keyin handler",
+        { prevFormula },
+        keyinHelper(prevFormula, btnText)
+      );
+      return keyinHelper(prevFormula, btnText);
+    });
   };
 
   useKeyboardInput({
@@ -54,8 +78,9 @@ const CalculatorJSX = ({ className }, ref) => {
   useEffect(() => {
     // 如果 formula 上只有數字 => 未進行計算 => computedValue 不顯示
     // 用來處理計算完一個算式後，再進行其他計算時，上一個算式的 computedValue 應該移除
+    console.log("[UseEffect] calculator", { formula });
     if (!Number.isNaN(+formula)) {
-      setComputedValue("");
+      setComputedValue((prevValue) => "");
     }
   }, [formula]);
 

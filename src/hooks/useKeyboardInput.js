@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { normalizeOperatorsHelper } from "../utils/input.helpers";
 
 const useKeyboardInput = ({
   keyinHandler,
@@ -6,7 +7,7 @@ const useKeyboardInput = ({
   getComputedValue,
   formula,
 }) => {
-  console.log("use custom hook");
+  console.log("use custom hook", { formula });
 
   const keydownHandler = (e) => {
     const keyText = e.key;
@@ -38,10 +39,13 @@ const useKeyboardInput = ({
     switch (keyText) {
       case "Clear":
       case "Backspace":
+        console.log("[Custom] Clear");
         clearCurrentInput();
         break;
       case "=":
       case "Enter":
+        console.log("[Custom] Equal", { formula });
+        keyinHandler(normalizeOperatorsHelper(keyText));
         getComputedValue(formula);
         break;
       case "+":
@@ -59,7 +63,8 @@ const useKeyboardInput = ({
       case "8":
       case "9":
       case ".":
-        keyinHandler(keyText);
+        console.log("[Custom] Equal");
+        keyinHandler(normalizeOperatorsHelper(keyText));
         break;
       default:
         console.log("[Error] Unwanted key");
@@ -67,61 +72,12 @@ const useKeyboardInput = ({
     }
   };
 
-  // 數字鍵盤 0-9 & 一般鍵盤 0-9
-  // const keyinHandlerForKeyboard = (e) => {
-  //   let keyText = e.key;
-  //   const acceptedKeys = [
-  //     "1",
-  //     "2",
-  //     "3",
-  //     "4",
-  //     "5",
-  //     "6",
-  //     "7",
-  //     "8",
-  //     "9",
-  //     "0",
-  //     ".",
-  //     "+",
-  //     "-",
-  //     "*",
-  //     "/",
-  //     "=",
-  //     "Enter",
-  //     "Clear",
-  //     "Backspace",
-  //   ];
-
-  //   if (keyText === "*")
-  //     if (!acceptedKeys.includes(keyText)) {
-  //       // convert keyText 變成 keyinHandler 可讀
-
-  //       return;
-  //     }
-  //   keyinHandler(keyText);
-  // };
-
-  // // 數字鍵盤 Clear 和 一般鍵盤 backspace
-  // const clearCurrentInputForKeyboard = (e) => {
-  //   console.log("for keyboard =========");
-  //   if (e.key !== "Clear" && e.key !== "Backspace") {
-  //     return;
-  //   }
-  //   clearCurrentInput();
-  // };
-
-  // 數字鍵盤 =  & 一般鍵盤 = & 一般鍵盤 Enter
-  // const getComputedValueForKeyboard = (e) => {
-  //   if (e.key !== "Enter" && e.key !== "=") {
-  //     return;
-  //   }
-  //   getComputedValue(formula);
-  // };
-
   useEffect(() => {
+    console.log("[Custom] Add", { formula });
     window.addEventListener("keydown", keydownHandler);
 
     return () => {
+      console.log("[Custom] Remove", { formula });
       window.removeEventListener("keydown", keydownHandler);
     };
   }, [formula]);

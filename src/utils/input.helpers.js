@@ -19,7 +19,7 @@ const clearCurrentInputHelper = (formula) => {
       }, "")
       .trimEnd();
   }
-
+  console.log("clearnCurrentInputHelper", { newFormula });
   return newFormula ? newFormula : "0";
 };
 
@@ -76,6 +76,7 @@ const keyinHelper = (formula, btnText) => {
         endsWithDecimalDot ||
         endsWithOperator ||
         endsWithEqual;
+      console.log("keyinHelper [.]", { formula });
       return cannotAddDecimalDot ? formula : `${formula}${btnText}`;
     case " ÷ ":
     case " - ":
@@ -87,6 +88,7 @@ const keyinHelper = (formula, btnText) => {
         endsWithOperator ||
         endsWithEqual ||
         endsWithNegator;
+      console.log("keyinHelper [+-/*]", { formula });
       return cannotAddOperator ? formula : `${formula}${btnText}`;
     case "0":
       if (endsWithEqual) {
@@ -94,9 +96,11 @@ const keyinHelper = (formula, btnText) => {
       }
 
       const cannotAddZero = hasOnlyOneZero || endsWithSpaceZero;
+      console.log("keyinHelper [0]", { formula });
       return cannotAddZero ? formula : `${formula}${btnText}`;
     default:
       // 輸入 1-9 字元
+      console.log("keyinHelper [default]", { formula });
       if (endsWithEqual) {
         return btnText;
       }
@@ -104,4 +108,23 @@ const keyinHelper = (formula, btnText) => {
   }
 };
 
-export { clearCurrentInputHelper, negateLastNumberHelper, keyinHelper };
+const normalizeOperatorsHelper = (keyText) => {
+  const keyMappings = {
+    "=": " = ",
+    Enter: " = ",
+    "+": " + ",
+    "-": " - ",
+    "*": " x ",
+    "/": " ÷ ",
+  };
+
+  console.log("[]", { keyText, display: keyMappings[keyText] });
+  return keyMappings[keyText] ? keyMappings[keyText] : keyText;
+};
+
+export {
+  clearCurrentInputHelper,
+  negateLastNumberHelper,
+  keyinHelper,
+  normalizeOperatorsHelper,
+};

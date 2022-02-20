@@ -26,6 +26,7 @@ const computeValueFromFormula = (formula) => {
     .replace(" = ", "")
     .replace("x", "*")
     .replace("÷", "/");
+  console.log("compute value from formula", { formula });
   const convertedValue = eval(processedFormula);
 
   // too big
