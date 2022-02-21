@@ -88,12 +88,6 @@ const keyinHelper = (formula, btnText) => {
         endsWithOperator ||
         endsWithEqual ||
         endsWithNegator;
-      console.log(
-        "keyinHelper [+-/*=]",
-        { formula },
-        "to return",
-        cannotAddOperator ? formula : `${formula}${btnText}`
-      );
       return cannotAddOperator ? formula : `${formula}${btnText}`;
     case "0":
       if (endsWithEqual) {

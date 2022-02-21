@@ -5,7 +5,7 @@ import Display from "../components/Display";
 import NumberButton from "../components/NumberButton";
 import MathOperatorButton from "../components/MathOperatorButton";
 import ControlButton from "../components/ControlButton";
-// import useKeyboardInput from "../hooks/useKeyboardInput";
+import useKeyboardInput from "../hooks/useKeyboardInput";
 import { computeValueFromFormula } from "../utils/output-helpers";
 import {
   clearCurrentInputHelper,
@@ -74,16 +74,18 @@ const CalculatorJSX = ({ className }, ref) => {
   //   });
   // }, []);
 
-  // useKeyboardInput({
-  //   keyinHandler,
-  //   clearCurrentInput,
-  // });
+  useKeyboardInput({
+    keyinHandler,
+    clearCurrentInput,
+    getComputedValue,
+    formula,
+  });
 
-  // useEffect(() => {
-  //   if (formula.endsWith(" = ")) {
-  //     getComputedValue(formula);
-  //   }
-  // }, [formula]);
+  useEffect(() => {
+    if (formula.endsWith(" = ")) {
+      getComputedValue(formula);
+    }
+  }, [formula]);
 
   useEffect(() => {
     // 如果 formula 上只有數字 => 未進行計算 => computedValue 不顯示
@@ -137,9 +139,9 @@ const CalculatorJSX = ({ className }, ref) => {
             onClick={(e) => {
               keyinHandler(e.target.value);
               if (e.target.value.trim() === "=") {
-                if (!formula.endsWith(" ")) {
+                if (!formula.endsWith(" ") && !formula.endsWith(".")) {
                   getComputedValue(formula);
-                } // 結尾不是 operator
+                } // 結尾不是 operator 也不是小數點，才可以計算值
               }
             }}
           >
