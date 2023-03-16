@@ -1,10 +1,10 @@
 import { useState, forwardRef, useEffect, useCallback } from "react";
 import styled from "@emotion/styled";
 
-import Display from "../components/Display";
-import NumberButton from "../components/NumberButton";
-import MathOperatorButton from "../components/MathOperatorButton";
-import ControlButton from "../components/ControlButton";
+import Display from "../components/calculator/Display";
+import NumberButton from "../components/buttons/NumberButton";
+import MathOperatorButton from "../components/buttons/MathOperatorButton";
+import ControlButton from "../components/buttons/ControlButton";
 import useKeyboardInput from "../hooks/useKeyboardInput";
 import { computeValueFromFormula } from "../utils/output-helpers";
 import {

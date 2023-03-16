@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import "./App.css";
 import Calculator from "./views/Calculator";
-import Backdrop from "./views/Backdrop";
+import Backdrop from "./components/Backdrop";
 import useDragAndDrop from "./hooks/useDragAndDrop";
 
 function App() {
