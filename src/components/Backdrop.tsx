@@ -1,9 +1,17 @@
-import { forwardRef } from "react";
+import { forwardRef, ReactNode, Ref } from "react";
 import styled from "@emotion/styled";
 
-const BackdropJSX = ({ className, children }, ref) => (
+type Props = {
+  className?: string;
+  children: ReactNode;
+};
+
+const BackdropJSX = (
+  { className, children }: Props,
+  ref: Ref<HTMLDivElement>
+) => (
   <div className={className} ref={ref}>
-    {console.log("[Backdrop] render")}
+    {/* {console.log("[Backdrop] render")} */}
     {children}
   </div>
 );

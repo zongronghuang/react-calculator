@@ -6,7 +6,6 @@
     "module": "esnext",
     "rootDir": "src",
     "moduleResolution": "node",
-    "types": ["webpack-env"],
     "resolveJsonModule": true,
     "outDir": "build",
     "noEmit": true,

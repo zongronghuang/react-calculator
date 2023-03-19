@@ -5,7 +5,7 @@ import Backdrop from "./components/Backdrop";
 import useDragAndDrop from "./hooks/useDragAndDrop";
 
 function App() {
-  const backdropRef = useRef();
+  const backdropRef = useRef<HTMLDivElement>(null);
   const calculatorRef = useRef();
 
   useDragAndDrop({
