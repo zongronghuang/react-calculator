@@ -1,7 +1,12 @@
 import styled from "@emotion/styled";
 import BaseButton from "./BaseButton";
 
-const NumberButtonJSX = ({ className, value }) => (
+type Props = {
+  className?: string;
+  value: number | string;
+};
+
+const NumberButtonJSX = ({ className, value }: Props) => (
   <BaseButton
     className={`${className} ${value === 0 && "double-width"}`}
     value={value}

@@ -1,6 +1,11 @@
 import styled from "@emotion/styled";
 
-const BaseButtonJSX = ({ className, value }) => {
+type Props = {
+  className?: string;
+  value: string | number;
+};
+
+const BaseButtonJSX = ({ className, value }: Props) => {
   return (
     <button className={className} value={value}>
       {value}

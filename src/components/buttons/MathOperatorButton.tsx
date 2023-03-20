@@ -1,7 +1,12 @@
 import styled from "@emotion/styled";
 import BaseButton from "./BaseButton";
 
-const MathOperatorButtonJSX = ({ className, value }) => (
+type Props = {
+  className?: string;
+  value: string;
+};
+
+const MathOperatorButtonJSX = ({ className, value }: Props) => (
   <BaseButton className={className} value={value} />
 );
 
