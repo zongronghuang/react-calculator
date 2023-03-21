@@ -1,10 +1,11 @@
-import { useState, forwardRef, useEffect, useCallback } from "react";
+import { useState, forwardRef, useEffect, useCallback, Ref } from "react";
 import styled from "@emotion/styled";
 
 import Display from "../components/calculator/Display";
-import NumberButton from "../components/buttons/NumberButton";
-import MathOperatorButton from "../components/buttons/MathOperatorButton";
-import ControlButton from "../components/buttons/ControlButton";
+import ControlKeys from "../components/calculator/ControlKeys";
+import NumberKeys from "../components/calculator/NumberKeys";
+import OperatorKeys from "../components/calculator/OperatorKeys";
+
 import useKeyboardInput from "../hooks/useKeyboardInput";
 import { computeValueFromFormula } from "../utils/output-helpers";
 import {
@@ -13,17 +14,19 @@ import {
   keyinHelper,
 } from "../utils/input.helpers";
 
-const digits = [7, 8, 9, 4, 5, 6, 1, 2, 3, 0, "."];
-const mathOperators = [" ÷ ", " x ", " - ", " + ", " = "];
-const controls = ["C", "AC", "+/-"];
+// const controls = ["C", "AC", "+/-"];
 
-const CalculatorJSX = ({ className }, ref) => {
+type Props = {
+  className?: string;
+};
+
+const CalculatorJSX = ({ className }: Props, ref: Ref<HTMLDivElement>) => {
   const [formula, setFormula] = useState("0");
   const [computedValue, setComputedValue] = useState("");
 
   console.log("[APP RENDER]", { formula, computedValue });
 
-  const getComputedValue = (formula) => {
+  const getComputedValue = (formula: string) => {
     console.log("getComputedValue", { formula });
     const result = computeValueFromFormula(formula);
     setComputedValue((prevValue) => result);
@@ -109,50 +112,19 @@ const CalculatorJSX = ({ className }, ref) => {
 
         {/* 鍵盤區域 */}
         <div className="calculator--keypad">
-          <div
-            className="keypad--controls"
-            onClick={(e) => {
-              const btnText = e.target.value;
-              if (btnText === "AC") clearAll();
-              if (btnText === "C") clearCurrentInput();
-              if (btnText === "+/-") negateLastNumber();
-            }}
-          >
-            {controls.map((control, id) => (
-              <ControlButton key={`control-${id}`} value={`${control}`} />
-            ))}
-            {/* {console.log("[Keypad Controls] render")} */}
-          </div>
+          <ControlKeys
+            clearAll={clearAll}
+            clearCurrentInput={clearCurrentInput}
+            negateLastNumber={negateLastNumber}
+          />
 
-          <div
-            className="keypad--numbers"
-            onClick={(e) => keyinHandler(e.target.value)}
-          >
-            {digits.map((digit, id) => (
-              <NumberButton key={`digit-${id}`} value={digit} />
-            ))}
-            {/* {console.log("[Keypad Numbers] render")} */}
-          </div>
+          <NumberKeys keyinHandler={keyinHandler} />
 
-          <div
-            className="keypad--operators"
-            onClick={(e) => {
-              keyinHandler(e.target.value);
-              if (e.target.value.trim() === "=") {
-                if (!formula.endsWith(" ") && !formula.endsWith(".")) {
-                  getComputedValue(formula);
-                } // 結尾不是 operator 也不是小數點，才可以計算值
-              }
-            }}
-          >
-            {mathOperators.map((operator, id) => (
-              <MathOperatorButton
-                key={`operator-${id}}`}
-                value={`${operator}`}
-              />
-            ))}
-            {/* {console.log("[Keypad Operators] render")} */}
-          </div>
+          <OperatorKeys
+            formula={formula}
+            keyinHandler={keyinHandler}
+            getComputedValue={getComputedValue}
+          />
         </div>
       </div>
     </div>
@@ -190,29 +162,6 @@ const Calculator = styled(forwardRef(CalculatorJSX))`
     grid-template-columns: repeat(4, 1fr);
 
     flex-grow: 1;
-  }
-  .keypad--controls {
-    grid-column: 1 / 4;
-  }
-  .keypad--numbers {
-    grid-column: 1 / 4;
-    grid-row: 2 / 6;
-
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    justify-items: stretch;
-    align-items: stretch;
-  }
-
-  .keypad--operators {
-    grid-column: 4 / 5;
-    grid-row: 1 / -1;
-
-    display: flex;
-    flex-direction: column;
-
-    background-color: purple;
   }
 
   /* ------------------ */

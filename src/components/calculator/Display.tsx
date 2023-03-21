@@ -1,6 +1,12 @@
 import styled from "@emotion/styled";
 
-const DisplayJSX = ({ className, content, type }) => {
+type Props = {
+  className?: string;
+  content: string;
+  type: string;
+};
+
+const DisplayJSX = ({ className, content, type }: Props) => {
   return (
     <input
       className={`${className} ${type}`}
