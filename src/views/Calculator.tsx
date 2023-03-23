@@ -14,8 +14,6 @@ import {
   keyinHelper,
 } from "../utils/input.helpers";
 
-// const controls = ["C", "AC", "+/-"];
-
 type Props = {
   className?: string;
 };
@@ -50,32 +48,16 @@ const CalculatorJSX = ({ className }: Props, ref: Ref<HTMLDivElement>) => {
     });
   };
 
-  // const clearCurrentInput = useCallback(() => {
-  //   setComputedValue((prevValue) => {
-  //     return "";
-  //   });
-  //   setFormula((prevFormula) => {
-  //     return clearCurrentInputHelper(prevFormula);
-  //   });
-  // }, []);
-
   const negateLastNumber = () => {
     setFormula((prevFormula) => negateLastNumberHelper(prevFormula));
   };
 
-  const keyinHandler = (btnText) => {
+  const keyinHandler = (btnText: string) => {
     setFormula((prevFormula) => {
       console.log("KEYIN handler", { prevFormula, btnText });
       return keyinHelper(prevFormula, btnText);
     });
   };
-
-  // const keyinHandler = useCallback((btnText) => {
-  //   setFormula((prevFormula) => {
-  //     console.log("KEYIN handler", { prevFormula, btnText });
-  //     return keyinHelper(prevFormula, btnText);
-  //   });
-  // }, []);
 
   useKeyboardInput({
     keyinHandler,
@@ -103,14 +85,12 @@ const CalculatorJSX = ({ className }: Props, ref: Ref<HTMLDivElement>) => {
       <div className="calculator">
         {/* {console.log("[Calculator] render")} */}
 
-        {/* 算式和算數結果顯示區域 */}
         <div className="calculator--displays">
           {/* {console.log("[Display] render")} */}
           <Display content={formula} type="formula"></Display>
           <Display content={computedValue} type="result"></Display>
         </div>
 
-        {/* 鍵盤區域 */}
         <div className="calculator--keypad">
           <ControlKeys
             clearAll={clearAll}
