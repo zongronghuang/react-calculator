@@ -6,7 +6,7 @@ import useDragAndDrop from "./hooks/useDragAndDrop";
 
 function App() {
   const backdropRef = useRef(null);
-  const calculatorRef = useRef();
+  const calculatorRef = useRef(null);
 
   useDragAndDrop({
     dragItemRef: calculatorRef,
