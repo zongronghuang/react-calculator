@@ -62,7 +62,6 @@ const CalculatorJSX = ({ className }: Props, ref: Ref<HTMLDivElement>) => {
   useKeyboardInput({
     keyinHandler,
     clearCurrentInput,
-    getComputedValue,
     formula,
   });
 

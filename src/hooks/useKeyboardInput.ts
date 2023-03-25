@@ -1,15 +1,20 @@
 import { useEffect } from "react";
 import { normalizeOperatorsHelper } from "../utils/input.helpers";
 
+type Params = {
+  keyinHandler: (btnText: string) => void;
+  clearCurrentInput: () => void;
+  formula: string;
+};
+
 const useKeyboardInput = ({
   keyinHandler,
   clearCurrentInput,
-  getComputedValue,
   formula,
-}) => {
+}: Params) => {
   console.log("use custom hook");
 
-  const keydownHandler = (e) => {
+  const keydownHandler = (e: KeyboardEvent) => {
     console.log("[GET Key]", e.key);
     const keyText = e.key;
     const acceptedKeys = [
