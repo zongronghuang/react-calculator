@@ -1,4 +1,8 @@
-const clearCurrentInputHelper = (formula) => {
+type Keys = {
+  [key: string]: string;
+};
+
+const clearCurrentInputHelper = (formula: string) => {
   const splitFormula = formula.split(" ");
   const lastItemId = splitFormula.length - 1;
   const lastItem = splitFormula[lastItemId];
@@ -23,7 +27,7 @@ const clearCurrentInputHelper = (formula) => {
   return newFormula ? newFormula : "0";
 };
 
-const negateLastNumberHelper = (formula) => {
+const negateLastNumberHelper = (formula: string) => {
   const isOneZero = formula === "0";
   const endsWithSpaceZero = formula.endsWith(" 0");
   const endsWithNegator = formula.endsWith("-");
@@ -58,7 +62,7 @@ const negateLastNumberHelper = (formula) => {
   }
 };
 
-const keyinHelper = (formula, btnText) => {
+const keyinHelper = (formula: string, btnText: string) => {
   console.log({ formula, btnText });
 
   const endsWithDecimalDot = formula.endsWith(".");
@@ -113,8 +117,8 @@ const keyinHelper = (formula, btnText) => {
   }
 };
 
-const normalizeOperatorsHelper = (keyText) => {
-  const keyMappings = {
+const normalizeOperatorsHelper = (keyText: string) => {
+  const keyMappings: Keys = {
     "=": " = ",
     Enter: " = ",
     "+": " + ",

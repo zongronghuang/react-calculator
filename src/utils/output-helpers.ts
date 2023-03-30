@@ -1,9 +1,9 @@
-const isLargerThanMaximum = (value) => {
+const isLargerThanMaximum = (value: number) => {
   const maximumValue = Math.pow(2, 32);
   return value > maximumValue ? true : false;
 };
 
-const removeTrailingDecimalZeros = (string) => {
+const removeTrailingDecimalZeros = (string: string) => {
   const splitString = string.split(".");
   const integer = splitString[0];
   const decimalArr = splitString[1].split("");
@@ -20,7 +20,7 @@ const removeTrailingDecimalZeros = (string) => {
     : `${integer}.${decimalArr.join("")}`;
 };
 
-const computeValueFromFormula = (formula) => {
+const computeValueFromFormula = (formula: string) => {
   // 清除 formula 中不需要的字元並轉換字元
   // replace 方法用 RegExp + flag g 才會全部取代，否則只取代一次
   const processedFormula = formula
