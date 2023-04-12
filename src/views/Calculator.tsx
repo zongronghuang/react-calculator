@@ -7,7 +7,7 @@ import NumberKeys from "../components/calculator/NumberKeys";
 import OperatorKeys from "../components/calculator/OperatorKeys";
 
 import useKeyboardInput from "../hooks/useKeyboardInput";
-import { computeValueFromFormula } from "../utils/output-helpers";
+import { compute } from "../utils/output";
 import {
   clearCurrentInputHelper,
   negateLastNumberHelper,
@@ -26,8 +26,8 @@ const CalculatorJSX = ({ className }: Props, ref: Ref<HTMLDivElement>) => {
 
   const getComputedValue = (formula: string) => {
     console.log("getComputedValue", { formula });
-    const result = computeValueFromFormula(formula);
-    setComputedValue((prevValue) => result);
+    let result = compute(formula);
+    setComputedValue(result.toString());
   };
 
   const clearAll = () => {
@@ -49,7 +49,7 @@ const CalculatorJSX = ({ className }: Props, ref: Ref<HTMLDivElement>) => {
   };
 
   const negateLastNumber = () => {
-    setFormula((prevFormula) => negateLastNumberHelper(prevFormula));
+    setFormula((prevFormula) => negateLastNumberHelper(prevFormula) as string);
   };
 
   const keyinHandler = (btnText: string) => {
