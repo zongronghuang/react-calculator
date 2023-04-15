@@ -137,11 +137,9 @@ function combineMathExp(prevExp: string, input: string) {
   const finalChar = exp.at(-1) as string;
   const lastNum = exp.split(" ").at(-1) as string;
 
-  // 不可兩個 operator (除了 -)；要以新 operator 取代舊 operator
-  const hasSerialOperators =
-    input !== "-" && operators.includes(input) && operators.includes(finalChar);
-  if (hasSerialOperators) {
-    return exp.slice(0, -2) + normalizeInput(input);
+  // 結尾為 = 時，不可再加任何東西
+  if (finalChar === "=") {
+    return prevExp;
   }
 
   // 負數
@@ -150,6 +148,20 @@ function combineMathExp(prevExp: string, input: string) {
       return prevExp;
     }
     return `${-parseFloat(lastNum)}`;
+  }
+
+  // 數字開頭不可為 00+
+  const startsWithZero =
+    input === "0" && !lastNum?.includes(".") && lastNum?.startsWith("0");
+  if (startsWithZero) {
+    return prevExp;
+  }
+
+  // 不可兩個 operator (除了 -)；要以新 operator 取代舊 operator
+  const hasSerialOperators =
+    input !== "-" && operators.includes(input) && operators.includes(finalChar);
+  if (hasSerialOperators) {
+    return exp.slice(0, -2) + normalizeInput(input);
   }
 
   // 不可 . operator
@@ -163,19 +175,6 @@ function combineMathExp(prevExp: string, input: string) {
     (input === "." && operators.includes(finalChar)) ||
     (input === "." && finalChar === ".");
   if (cannotAddDecimalDot) {
-    return prevExp;
-  }
-
-  // 結尾為 = 時，不可再加任何東西
-  if (finalChar === "=") {
-    return prevExp;
-  }
-
-  // 數字開頭不可為 00+
-
-  const startsWithZero =
-    input === "0" && !lastNum?.includes(".") && lastNum?.startsWith("0");
-  if (startsWithZero) {
     return prevExp;
   }
 

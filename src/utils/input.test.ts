@@ -1,19 +1,4 @@
-// const {
-//   clearCurrentInputHelper,
-//   negateLastNumberHelper,
-//   keyinHelper,
-//   normalizeOperatorsHelper,
-//   combineMathExp,
-// } = require("./input");
-// import { describe, expect, test } from "@jest/globals";
-import {
-  clearCurrentInputHelper,
-  negateLastNumberHelper,
-  keyinHelper,
-  normalizeOperatorsHelper,
-  combineMathExp,
-  normalizeInput,
-} from "./input";
+import { combineMathExp, normalizeInput } from "./input";
 
 describe("[Make valid math expressions]", () => {
   test("Normalize input", () => {
