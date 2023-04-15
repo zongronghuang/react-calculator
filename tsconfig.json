@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es2016",
+    "target": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "jsx": "react-jsx",
-    "module": "esnext",
+    "module": "commonjs",
     "rootDir": "src",
     "moduleResolution": "node",
     "resolveJsonModule": true,

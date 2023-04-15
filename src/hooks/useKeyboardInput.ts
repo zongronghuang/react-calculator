@@ -1,16 +1,16 @@
 import { useEffect } from "react";
-import { normalizeOperatorsHelper } from "../utils/input.helpers";
+import { normalizeOperatorsHelper } from "../utils/input";
 
 type Params = {
   keyinHandler: (btnText: string) => void;
   clearCurrentInput: () => void;
-  formula: string;
+  mathExp: string;
 };
 
 const useKeyboardInput = ({
   keyinHandler,
   clearCurrentInput,
-  formula,
+  mathExp,
 }: Params) => {
   console.log("use custom hook");
 
@@ -67,8 +67,8 @@ const useKeyboardInput = ({
         console.log("[Custom] digits & operators");
         keyinHandler(normalizeOperatorsHelper(keyText));
         // if (keyText.trim() === "=") {
-        //   if (!formula.endsWith(" ") && !formula.endsWith(".")) {
-        //     getComputedValue(formula);
+        //   if (!mathExp.endsWith(" ") && !mathExp.endsWith(".")) {
+        //     getComputedValue(mathExp);
         //   } // 結尾不是 operator 也不是小數點，才可以計算值
         // }
         break;
@@ -84,7 +84,7 @@ const useKeyboardInput = ({
     return () => {
       window.removeEventListener("keydown", keydownHandler);
     };
-  }, [formula]);
+  }, [mathExp]);
 };
 
 export default useKeyboardInput;

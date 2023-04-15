@@ -12,28 +12,30 @@ import {
   clearCurrentInputHelper,
   negateLastNumberHelper,
   keyinHelper,
-} from "../utils/input.helpers";
+} from "../utils/input";
 
 type Props = {
   className?: string;
 };
 
 const CalculatorJSX = ({ className }: Props, ref: Ref<HTMLDivElement>) => {
-  const [formula, setFormula] = useState("0");
+  const [mathExp, setMathExp] = useState("0");
   const [computedValue, setComputedValue] = useState("");
 
-  console.log("[APP RENDER]", { formula, computedValue });
+  console.log("[APP RENDER]", { mathExp, computedValue });
 
-  const getComputedValue = (formula: string) => {
-    console.log("getComputedValue", { formula });
-    let result = compute(formula);
+  const getComputedValue = (mathExp: string) => {
+    console.log("getComputedValue", { mathExp });
+    let result = compute(mathExp);
     setComputedValue(result.toString());
   };
 
   const clearAll = () => {
-    setFormula((prevFormula) => {
+    setMathExp((prevmathExp) => {
       return "0";
     });
+
+    setMathExp(" ");
     setComputedValue((prevValue) => {
       return "";
     });
@@ -43,41 +45,41 @@ const CalculatorJSX = ({ className }: Props, ref: Ref<HTMLDivElement>) => {
     setComputedValue((prevValue) => {
       return "";
     });
-    setFormula((prevFormula) => {
-      return clearCurrentInputHelper(prevFormula);
+    setMathExp((prevmathExp) => {
+      return clearCurrentInputHelper(prevmathExp);
     });
   };
 
   const negateLastNumber = () => {
-    setFormula((prevFormula) => negateLastNumberHelper(prevFormula) as string);
+    setMathExp((prevmathExp) => negateLastNumberHelper(prevmathExp) as string);
   };
 
   const keyinHandler = (btnText: string) => {
-    setFormula((prevFormula) => {
-      console.log("KEYIN handler", { prevFormula, btnText });
-      return keyinHelper(prevFormula, btnText);
+    setMathExp((prevmathExp) => {
+      console.log("KEYIN handler", { prevmathExp, btnText });
+      return keyinHelper(prevmathExp, btnText);
     });
   };
 
   useKeyboardInput({
     keyinHandler,
     clearCurrentInput,
-    formula,
+    mathExp,
   });
 
   useEffect(() => {
-    if (formula.endsWith(" = ")) {
-      getComputedValue(formula);
+    if (mathExp.endsWith(" = ")) {
+      getComputedValue(mathExp);
     }
-  }, [formula]);
+  }, [mathExp]);
 
   useEffect(() => {
-    // 如果 formula 上只有數字 => 未進行計算 => computedValue 不顯示
+    // 如果 mathExp 上只有數字 => 未進行計算 => computedValue 不顯示
     // 用來處理計算完一個算式後，再進行其他計算時，上一個算式的 computedValue 應該移除
-    if (!Number.isNaN(+formula)) {
+    if (!Number.isNaN(+mathExp)) {
       setComputedValue((prevValue) => "");
     }
-  }, [formula]);
+  }, [mathExp]);
 
   return (
     <div className={`${className} calculator-container`} ref={ref}>
@@ -86,7 +88,7 @@ const CalculatorJSX = ({ className }: Props, ref: Ref<HTMLDivElement>) => {
 
         <div className="calculator--displays">
           {/* {console.log("[Display] render")} */}
-          <Display content={formula} type="formula"></Display>
+          <Display content={mathExp} type="mathExp"></Display>
           <Display content={computedValue} type="result"></Display>
         </div>
 
@@ -100,7 +102,7 @@ const CalculatorJSX = ({ className }: Props, ref: Ref<HTMLDivElement>) => {
           <NumberKeys keyinHandler={keyinHandler} />
 
           <OperatorKeys
-            formula={formula}
+            mathExp={mathExp}
             keyinHandler={keyinHandler}
             getComputedValue={getComputedValue}
           />

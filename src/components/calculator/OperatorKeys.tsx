@@ -5,14 +5,14 @@ const mathOperators = [" ÷ ", " x ", " - ", " + ", " = "];
 
 type Props = {
   className?: string;
-  formula: string;
+  mathExp: string;
   keyinHandler: (btnText: string) => void;
   getComputedValue: (formula: string) => void;
 };
 
 const OperatorKeysJSX = ({
   className,
-  formula,
+  mathExp,
   getComputedValue,
   keyinHandler,
 }: Props) => {
@@ -23,8 +23,8 @@ const OperatorKeysJSX = ({
         const button = e.target as HTMLButtonElement;
         keyinHandler(button.value);
         if (button.value.trim() === "=") {
-          if (!formula.endsWith(" ") && !formula.endsWith(".")) {
-            getComputedValue(formula);
+          if (!mathExp.endsWith(" ") && !mathExp.endsWith(".")) {
+            getComputedValue(mathExp);
           } // 結尾不是 operator 也不是小數點，才可以計算值
         }
       }}

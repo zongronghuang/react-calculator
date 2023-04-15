@@ -131,9 +131,67 @@ const normalizeOperatorsHelper = (keyText: string) => {
   return keyMappings[keyText] ? keyMappings[keyText] : keyText;
 };
 
+function combineMathExp(prevExp: string, input: string) {
+  const operators = ["+", "-", "x", "÷", "="];
+  const exp = prevExp.trim();
+  const finalChar = exp.at(-1) as string;
+  const lastNum = exp.split(" ").at(-1) as string;
+
+  // 不可兩個 operator (除了 -)；要以新 operator 取代舊 operator
+  const hasSerialOperators =
+    input !== "-" && operators.includes(input) && operators.includes(finalChar);
+  if (hasSerialOperators) {
+    return exp.slice(0, -2) + normalizeInput(input);
+  }
+
+  // 負數
+  if (input === "+/-") {
+    if (operators.includes(finalChar)) {
+      return prevExp;
+    }
+    return `${-parseFloat(lastNum)}`;
+  }
+
+  // 不可 . operator
+  const hasOperatorWithDot = finalChar === "." && operators.includes(input);
+  if (hasOperatorWithDot) {
+    return prevExp;
+  }
+
+  // 不可 operator + . || 不可 . .
+  const cannotAddDecimalDot =
+    (input === "." && operators.includes(finalChar)) ||
+    (input === "." && finalChar === ".");
+  if (cannotAddDecimalDot) {
+    return prevExp;
+  }
+
+  // 結尾為 = 時，不可再加任何東西
+  if (finalChar === "=") {
+    return prevExp;
+  }
+
+  // 數字開頭不可為 00+
+
+  const startsWithZero =
+    input === "0" && !lastNum?.includes(".") && lastNum?.startsWith("0");
+  if (startsWithZero) {
+    return prevExp;
+  }
+
+  return prevExp + normalizeInput(input);
+}
+
+function normalizeInput(input: string) {
+  const operators = ["+", "-", "x", "÷", "="];
+  return operators.includes(input) ? " " + input + " " : input;
+}
+
 export {
   clearCurrentInputHelper,
   negateLastNumberHelper,
   keyinHelper,
   normalizeOperatorsHelper,
+  combineMathExp,
+  normalizeInput,
 };
