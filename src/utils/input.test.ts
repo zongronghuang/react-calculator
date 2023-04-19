@@ -1,36 +1,13 @@
 import {
-  makeOppositeNum,
-  normalizeInput,
-  ignoreExpWithEqualSign,
+  turnLastNumOpposite,
   addDecimalDot,
   addOperator,
   addNumber,
+  combineMathExp,
 } from "./input";
 
 describe("[Make valid math expressions]", () => {
-  test("Normalize input", () => {
-    const inputs = ["=", "+", "-", "x", "÷", ".", "1", "0"];
-    const expected = [" = ", " + ", " - ", " x ", " ÷ ", ".", "1", "0"];
-    expect(inputs.map((input) => normalizeInput(input))).toEqual(expected);
-  });
-
-  test("Add nothing after =", () => {
-    const exps = [
-      "0 = ",
-      "-1 = ",
-      "2.3 = ",
-      "2 + 1 = ",
-      "2 - 1 = ",
-      "2 x 1 = ",
-      "2 x -1 = ",
-      "2 ÷ 1 = ",
-      "2 ÷ -1 = ",
-    ];
-
-    expect(exps.map((exp) => ignoreExpWithEqualSign(exp))).toEqual(exps);
-  });
-
-  test("+/- makes opposite numbers", () => {
+  test("+/- turns last number opposite", () => {
     const map = {
       "": "",
       "1": "-1",
@@ -68,7 +45,7 @@ describe("[Make valid math expressions]", () => {
 
     const baseExps = Object.keys(map);
     const expected = Object.values(map);
-    expect(baseExps.map((exp) => makeOppositeNum(exp))).toEqual(expected);
+    expect(baseExps.map((exp) => turnLastNumOpposite(exp))).toEqual(expected);
   });
 
   test("Add decimal dot", () => {
@@ -409,5 +386,363 @@ describe("[Make valid math expressions]", () => {
     const baseExps = Object.keys(map);
     const expected = Object.values(map);
     expect(baseExps.map((exp) => addNumber(exp, num))).toEqual(expected);
+  });
+
+  test("[ALL] Combine math expressions with any input", () => {
+    let input = "";
+    let map = {};
+    let baseExps = [];
+    let expected = [];
+
+    input = "+";
+    map = {
+      "": "",
+      "1": `1 ${input} `,
+      "-1": `-1 ${input} `,
+      "0": `0 ${input} `,
+      "1.2": `1.2 ${input} `,
+      "-1.2": `-1.2 ${input} `,
+
+      // 最後為 .，移除 . 並加上 input
+      "2 + 1.": `2 + 1 ${input} `,
+      "2 - 1.": `2 - 1 ${input} `,
+      "2 x 1.": `2 x 1 ${input} `,
+      "2 x -1.": `2 x -1 ${input} `,
+      "2 ÷ 1.": `2 ÷ 1 ${input} `,
+      "2 ÷ -1.": `2 ÷ -1 ${input} `,
+
+      // 最後為 =，不做處理
+      "2 + 1 = ": "2 + 1 = ",
+
+      // 最後為 operator，替換成新的 operator
+      "2 + 1 + ": `2 + 1 ${input} `,
+      "2 + 1 - ": `2 + 1 ${input} `,
+      "2 + 1 x ": `2 + 1 ${input} `,
+      "2 + 1 ÷ ": `2 + 1 ${input} `,
+    };
+    baseExps = Object.keys(map);
+    expected = Object.values(map);
+    expect(baseExps.map((exp) => combineMathExp(exp, input))).toEqual(expected);
+
+    input = "-";
+    map = {
+      "": "",
+      "1": `1 ${input} `,
+      "-1": `-1 ${input} `,
+      "0": `0 ${input} `,
+      "1.2": `1.2 ${input} `,
+      "-1.2": `-1.2 ${input} `,
+
+      // 最後為 .，移除 . 並加上 operator
+      "2 + 1.": `2 + 1 ${input} `,
+      "2 - 1.": `2 - 1 ${input} `,
+      "2 x 1.": `2 x 1 ${input} `,
+      "2 x -1.": `2 x -1 ${input} `,
+      "2 ÷ 1.": `2 ÷ 1 ${input} `,
+      "2 ÷ -1.": `2 ÷ -1 ${input} `,
+
+      // 最後為 =，不做處理
+      "2 + 1 = ": "2 + 1 = ",
+
+      // 最後為 operator，替換成新的 operator
+      "2 + 1 + ": `2 + 1 ${input} `,
+      "2 + 1 - ": `2 + 1 ${input} `,
+      "2 + 1 x ": `2 + 1 ${input} `,
+      "2 + 1 ÷ ": `2 + 1 ${input} `,
+    };
+    baseExps = Object.keys(map);
+    expected = Object.values(map);
+    expect(baseExps.map((exp) => combineMathExp(exp, input))).toEqual(expected);
+
+    input = "x";
+    map = {
+      "": "",
+      "1": `1 ${input} `,
+      "-1": `-1 ${input} `,
+      "0": `0 ${input} `,
+      "1.2": `1.2 ${input} `,
+      "-1.2": `-1.2 ${input} `,
+
+      // 最後為 .，移除 . 並加上 input
+      "2 + 1.": `2 + 1 ${input} `,
+      "2 - 1.": `2 - 1 ${input} `,
+      "2 x 1.": `2 x 1 ${input} `,
+      "2 x -1.": `2 x -1 ${input} `,
+      "2 ÷ 1.": `2 ÷ 1 ${input} `,
+      "2 ÷ -1.": `2 ÷ -1 ${input} `,
+
+      // 最後為 =，不做處理
+      "2 + 1 = ": "2 + 1 = ",
+
+      // 最後為 operator，替換成新的 operator
+      "2 + 1 + ": `2 + 1 ${input} `,
+      "2 + 1 - ": `2 + 1 ${input} `,
+      "2 + 1 x ": `2 + 1 ${input} `,
+      "2 + 1 ÷ ": `2 + 1 ${input} `,
+    };
+    baseExps = Object.keys(map);
+    expected = Object.values(map);
+    expect(baseExps.map((exp) => combineMathExp(exp, input))).toEqual(expected);
+
+    input = "÷";
+    map = {
+      "": "",
+      "1": `1 ${input} `,
+      "-1": `-1 ${input} `,
+      "0": `0 ${input} `,
+      "1.2": `1.2 ${input} `,
+      "-1.2": `-1.2 ${input} `,
+
+      // 最後為 .，移除 . 並加上 operator
+      "2 + 1.": `2 + 1 ${input} `,
+      "2 - 1.": `2 - 1 ${input} `,
+      "2 x 1.": `2 x 1 ${input} `,
+      "2 x -1.": `2 x -1 ${input} `,
+      "2 ÷ 1.": `2 ÷ 1 ${input} `,
+      "2 ÷ -1.": `2 ÷ -1 ${input} `,
+
+      // 最後為 =，不做處理
+      "2 + 1 = ": "2 + 1 = ",
+
+      // 最後為 operator，替換成新的 operator
+      "2 + 1 + ": `2 + 1 ${input} `,
+      "2 + 1 - ": `2 + 1 ${input} `,
+      "2 + 1 x ": `2 + 1 ${input} `,
+      "2 + 1 ÷ ": `2 + 1 ${input} `,
+    };
+    baseExps = Object.keys(map);
+    expected = Object.values(map);
+    expect(baseExps.map((exp) => combineMathExp(exp, input))).toEqual(expected);
+
+    input = "=";
+    map = {
+      "": "",
+      "1": `1 ${input} `,
+      "-1": `-1 ${input} `,
+      "0": `0 ${input} `,
+      "1.2": `1.2 ${input} `,
+      "-1.2": `-1.2 ${input} `,
+
+      // 最後為 .，移除 . 並加上 operator
+      "2 + 1.": `2 + 1 ${input} `,
+      "2 - 1.": `2 - 1 ${input} `,
+      "2 x 1.": `2 x 1 ${input} `,
+      "2 x -1.": `2 x -1 ${input} `,
+      "2 ÷ 1.": `2 ÷ 1 ${input} `,
+      "2 ÷ -1.": `2 ÷ -1 ${input} `,
+
+      // 最後為 =，不做處理
+      "2 + 1 = ": "2 + 1 = ",
+
+      // 最後為 operator，替換成新的 operator
+      "2 + 1 + ": `2 + 1 ${input} `,
+      "2 + 1 - ": `2 + 1 ${input} `,
+      "2 + 1 x ": `2 + 1 ${input} `,
+      "2 + 1 ÷ ": `2 + 1 ${input} `,
+    };
+    baseExps = Object.keys(map);
+    expected = Object.values(map);
+    expect(baseExps.map((exp) => combineMathExp(exp, input))).toEqual(expected);
+
+    input = "+/-";
+    map = {
+      "": "",
+      "1": "-1",
+      "-1": "1",
+      "0": "0",
+      "1.25": "-1.25",
+      "-1.25": "1.25",
+
+      "2 + 1": "2 + -1",
+      "2 - 1": "2 - -1",
+      "2 x 1": "2 x -1",
+      "2 x -1": "2 x 1",
+      "2 ÷ 1": "2 ÷ -1",
+      "2 ÷ -1": "2 ÷ 1",
+
+      "2 + 1.2": "2 + -1.2",
+      "2 - 1.2": "2 - -1.2",
+      "2 - -1.2": "2 - 1.2",
+      "2 x 1.2": "2 x -1.2",
+      "2 x -1.2": "2 x 1.2",
+      "2 ÷ 1.2": "2 ÷ -1.2",
+      "2 ÷ -1.2": "2 ÷ 1.2",
+
+      // 最後為 operator，不做處理
+      "2 + 1 = ": "2 + 1 = ",
+      "2 + 1 + ": "2 + 1 + ",
+      "2 + 1 - ": "2 + 1 - ",
+      "2 + 1 x ": "2 + 1 x ",
+      "2 + 1 ÷ ": "2 + 1 ÷ ",
+
+      // 小數點結尾
+      "2 + 1.": "2 + -1",
+      "2 + -1.": "2 + 1",
+    };
+    baseExps = Object.keys(map);
+    expected = Object.values(map);
+    expect(baseExps.map((exp) => combineMathExp(exp, input))).toEqual(expected);
+
+    input = ".";
+    map = {
+      "": "",
+      "1": "1.",
+      "-1": "-1.",
+      "0": "0.",
+      "1.25": "1.25",
+      "-1.25": "-1.25",
+
+      "2 + 1": "2 + 1.",
+      "2 - 1": "2 - 1.",
+      "2 x 1": "2 x 1.",
+      "2 x -1": "2 x -1.",
+      "2 ÷ 1": "2 ÷ 1.",
+      "2 ÷ -1": "2 ÷ -1.",
+
+      // 最後數字含小數點，不做處理
+      "2 + 1.2": "2 + 1.2",
+      "2 - 1.2": "2 - 1.2",
+      "2 - -1.2": "2 - -1.2",
+      "2 x 1.2": "2 x 1.2",
+      "2 x -1.2": "2 x -1.2",
+      "2 ÷ 1.2": "2 ÷ 1.2",
+      "2 ÷ -1.2": "2 ÷ -1.2",
+
+      // 最後為 operator，不做處理
+      "2 + 1 = ": "2 + 1 = ",
+      "2 + 1 + ": "2 + 1 + ",
+      "2 + 1 - ": "2 + 1 - ",
+      "2 + 1 x ": "2 + 1 x ",
+      "2 + 1 ÷ ": "2 + 1 ÷ ",
+    };
+    baseExps = Object.keys(map);
+    expected = Object.values(map);
+    expect(baseExps.map((exp) => combineMathExp(exp, input))).toEqual(expected);
+
+    input = "0";
+    map = {
+      "": "0",
+      "0": "0",
+      "1": "10",
+      "5": "50",
+      "90": "900",
+      "-1": "-10",
+      "-5": "-50",
+      "-90": "-900",
+      "1.2": "1.20",
+      "1.20": "1.200",
+      "-1.2": "-1.20",
+      "-1.20": "-1.200",
+
+      "2 + 1": "2 + 10",
+      "2 - 1": "2 - 10",
+      "2 x 1": "2 x 10",
+      "2 x -1": "2 x -10",
+      "2 ÷ 1": "2 ÷ 10",
+      "2 ÷ -1": "2 ÷ -10",
+
+      "2 + 1.": "2 + 1.0",
+      "2 - 1.": "2 - 1.0",
+      "2 x 1.": "2 x 1.0",
+      "2 x -1.": "2 x -1.0",
+      "2 ÷ 1.": "2 ÷ 1.0",
+      "2 ÷ -1.": "2 ÷ -1.0",
+
+      // 最後為 =，不做處理
+      "2 + 1 = ": "2 + 1 = ",
+
+      "2 + 1 + ": "2 + 1 + 0",
+      "2 + 1 - ": "2 + 1 - 0",
+      "2 + 1 x ": "2 + 1 x 0",
+      "2 + 1 ÷ ": "2 + 1 ÷ 0",
+
+      // 數字開頭最多一個 0
+      "2 + 1 + 0": "2 + 1 + 0",
+      "2 + 1 - 0": "2 + 1 - 0",
+      "2 + 1 x 0": "2 + 1 x 0",
+      "2 + 1 ÷ 0": "2 + 1 ÷ 0",
+
+      // 小數點後可加 0
+      "2 + 1 + 0.": "2 + 1 + 0.0",
+      "2 + 1 - 0.": "2 + 1 - 0.0",
+      "2 + 1 x 0.": "2 + 1 x 0.0",
+      "2 + 1 ÷ 0.": "2 + 1 ÷ 0.0",
+
+      "2 + 1 + 0.1": "2 + 1 + 0.10",
+      "2 + 1 - 0.1": "2 + 1 - 0.10",
+      "2 + 1 x 0.1": "2 + 1 x 0.10",
+      "2 + 1 ÷ 0.1": "2 + 1 ÷ 0.10",
+
+      "2 + 1 + 0.0": "2 + 1 + 0.00",
+      "2 + 1 - 0.0": "2 + 1 - 0.00",
+      "2 + 1 x 0.0": "2 + 1 x 0.00",
+      "2 + 1 ÷ 0.0": "2 + 1 ÷ 0.00",
+    };
+    baseExps = Object.keys(map);
+    expected = Object.values(map);
+    expect(baseExps.map((exp) => combineMathExp(exp, input))).toEqual(expected);
+
+    input = "2";
+    map = {
+      "": "2",
+      "0": "2",
+      "1": "12",
+      "5": "52",
+      "90": "902",
+      "-1": "-12",
+      "-5": "-52",
+      "-90": "-902",
+      "1.2": "1.22",
+      "1.20": "1.202",
+      "-1.2": "-1.22",
+      "-1.20": "-1.202",
+
+      "2 + 1": "2 + 12",
+      "2 - 1": "2 - 12",
+      "2 x 1": "2 x 12",
+      "2 x -1": "2 x -12",
+      "2 ÷ 1": "2 ÷ 12",
+      "2 ÷ -1": "2 ÷ -12",
+
+      "2 + 1.": "2 + 1.2",
+      "2 - 1.": "2 - 1.2",
+      "2 x 1.": "2 x 1.2",
+      "2 x -1.": "2 x -1.2",
+      "2 ÷ 1.": "2 ÷ 1.2",
+      "2 ÷ -1.": "2 ÷ -1.2",
+
+      // 最後為 =，不做處理
+      "2 + 1 = ": "2 + 1 = ",
+
+      "2 + 1 + ": "2 + 1 + 2",
+      "2 + 1 - ": "2 + 1 - 2",
+      "2 + 1 x ": "2 + 1 x 2",
+      "2 + 1 ÷ ": "2 + 1 ÷ 2",
+
+      // 數字開頭最多一個 0
+      "2 + 1 + 0": "2 + 1 + 2",
+      "2 + 1 - 0": "2 + 1 - 2",
+      "2 + 1 x 0": "2 + 1 x 2",
+      "2 + 1 ÷ 0": "2 + 1 ÷ 2",
+
+      // 小數點後可加 0
+      "2 + 1 + 0.": "2 + 1 + 0.2",
+      "2 + 1 - 0.": "2 + 1 - 0.2",
+      "2 + 1 x 0.": "2 + 1 x 0.2",
+      "2 + 1 ÷ 0.": "2 + 1 ÷ 0.2",
+
+      "2 + 1 + 0.1": "2 + 1 + 0.12",
+      "2 + 1 - 0.1": "2 + 1 - 0.12",
+      "2 + 1 x 0.1": "2 + 1 x 0.12",
+      "2 + 1 ÷ 0.1": "2 + 1 ÷ 0.12",
+
+      "2 + 1 + 0.0": "2 + 1 + 0.02",
+      "2 + 1 - 0.0": "2 + 1 - 0.02",
+      "2 + 1 x 0.0": "2 + 1 x 0.02",
+      "2 + 1 ÷ 0.0": "2 + 1 ÷ 0.02",
+    };
+    baseExps = Object.keys(map);
+    expected = Object.values(map);
+    expect(baseExps.map((exp) => combineMathExp(exp, input))).toEqual(expected);
   });
 });
