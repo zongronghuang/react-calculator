@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import MathOperatorButton from "../buttons/MathOperatorButton";
 
-const mathOperators = [" ÷ ", " x ", " - ", " + ", " = "];
+const mathOperators = ["÷", "x", "-", "+", "="];
 
 type Props = {
   className?: string;
