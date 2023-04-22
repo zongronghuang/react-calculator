@@ -72,9 +72,11 @@ function parseExpressionToNumber(exp: string) {
   return getLocalSum(getLocalProduct(arr)); // 先乘除，後加減
 }
 
-function isLargerThanMaximum(value: number) {
-  const max = Math.pow(2, 32);
-  return value > max ? true : false;
+function isWithinBounds(value: number) {
+  const upperBound = Math.pow(2, 32);
+  const lowerBound = -Infinity;
+
+  return value < upperBound && value > lowerBound;
 }
 
 function normalizeExpression(exp: string) {
@@ -85,7 +87,7 @@ function compute(exp: string) {
   const mathExpression = normalizeExpression(exp);
   const result = parseExpressionToNumber(mathExpression) as number;
 
-  return isLargerThanMaximum(result) ? "NUMBER TOO BIG" : result;
+  return isWithinBounds(result) ? result : "NOT A NUMBER";
 }
 
 export {
@@ -93,7 +95,7 @@ export {
   parseExpressionToNumber,
   getLocalProduct,
   getLocalSum,
-  isLargerThanMaximum,
+  isWithinBounds,
   normalizeExpression,
   compute,
 };
