@@ -1,10 +1,9 @@
 function combineMathExp(baseExp: string, input: string) {
-  // 結尾為 = 時，不可再加任何東西
-  if (baseExp.includes("=")) {
-    return baseExp;
-  }
-
   switch (input) {
+    case "AC":
+      return clearAll(baseExp);
+    case "C":
+      return clearLastInput(baseExp);
     case "+":
     case "-":
     case "x":
@@ -21,18 +20,21 @@ function combineMathExp(baseExp: string, input: string) {
 }
 
 function turnLastNumOpposite(baseExp: string) {
-  if (!baseExp) {
+  if (!baseExp || baseExp.includes("=")) {
     return baseExp;
   }
 
-  const operators = ["+", "-", "x", "÷", "="];
+  const operators = ["+", "-", "x", "÷"];
   const segments = baseExp.trim().split(" ");
   const lastSegment = segments.at(-1) as string;
   if (operators.includes(lastSegment)) {
-    return baseExp;
+    return baseExp + "-";
   }
 
-  segments[segments.length - 1] = `${-parseFloat(lastSegment)}`;
+  // 最後一項數字以小數點結尾 vs 結尾非小數點
+  segments[segments.length - 1] = lastSegment.endsWith(".")
+    ? `${-parseFloat(lastSegment)}` + "."
+    : `${-parseFloat(lastSegment)}`;
   return segments.join(" ");
 }
 
@@ -103,10 +105,34 @@ function addNumber(baseExp: string, input: string) {
   return baseExp + input;
 }
 
+function clearAll(baseExp: string) {
+  return "0";
+}
+
+function clearLastInput(baseExp: string) {
+  if (baseExp.includes("=")) {
+    return "0";
+  }
+
+  if (baseExp.length === 1) {
+    return "0";
+  }
+
+  const endsWithOperator =
+    baseExp.endsWith(" + ") ||
+    baseExp.endsWith(" - ") ||
+    baseExp.endsWith(" x ") ||
+    baseExp.endsWith(" ÷ ");
+
+  return endsWithOperator ? baseExp.slice(0, -3) : baseExp.slice(0, -1);
+}
+
 export {
   turnLastNumOpposite,
   addDecimalDot,
   addOperator,
   addNumber,
   combineMathExp,
+  clearAll,
+  clearLastInput,
 };
