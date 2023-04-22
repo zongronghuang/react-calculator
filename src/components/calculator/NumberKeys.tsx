@@ -1,24 +1,18 @@
 import styled from "@emotion/styled";
 import NumberButton from "../buttons/NumberButton";
 
-const digits = [7, 8, 9, 4, 5, 6, 1, 2, 3, 0, "."];
+const digits = ["7", "8", "9", "4", "5", "6", "1", "2", "3", "0", "."];
 
 type Props = {
   className?: string;
-  keyinHandler: (btnText: string) => void;
+  // keyinHandler: (btnText: string) => void;
 };
 
-const NumberKeysJSX = ({ className, keyinHandler }: Props) => {
+const NumberKeysJSX = ({ className }: Props) => {
   return (
-    <div
-      className={className}
-      onClick={(e) => {
-        const button = e.target as HTMLButtonElement;
-        keyinHandler(button.value);
-      }}
-    >
-      {digits.map((digit, id) => (
-        <NumberButton key={`digit-${id}`} value={digit} />
+    <div className={className}>
+      {digits.map((digit) => (
+        <NumberButton value={digit} />
       ))}
       {/* {console.log("[Keypad Numbers] render")} */}
     </div>

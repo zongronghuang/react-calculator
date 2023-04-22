@@ -5,32 +5,13 @@ const mathOperators = [" ÷ ", " x ", " - ", " + ", " = "];
 
 type Props = {
   className?: string;
-  mathExp: string;
-  keyinHandler: (btnText: string) => void;
-  getComputedValue: (formula: string) => void;
 };
 
-const OperatorKeysJSX = ({
-  className,
-  mathExp,
-  getComputedValue,
-  keyinHandler,
-}: Props) => {
+const OperatorKeysJSX = ({ className }: Props) => {
   return (
-    <div
-      className={className}
-      onClick={(e) => {
-        const button = e.target as HTMLButtonElement;
-        keyinHandler(button.value);
-        if (button.value.trim() === "=") {
-          if (!mathExp.endsWith(" ") && !mathExp.endsWith(".")) {
-            getComputedValue(mathExp);
-          } // 結尾不是 operator 也不是小數點，才可以計算值
-        }
-      }}
-    >
-      {mathOperators.map((operator, id) => (
-        <MathOperatorButton key={`operator-${id}}`} value={`${operator}`} />
+    <div className={className}>
+      {mathOperators.map((operator) => (
+        <MathOperatorButton value={operator} />
       ))}
     </div>
   );

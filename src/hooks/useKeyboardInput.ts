@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { normalizeOperatorsHelper } from "../utils/input";
+// import { normalizeOperatorsHelper } from "../utils/input";
 
 type Params = {
   keyinHandler: (btnText: string) => void;
@@ -65,7 +65,7 @@ const useKeyboardInput = ({
       case "9":
       case ".":
         console.log("[Custom] digits & operators");
-        keyinHandler(normalizeOperatorsHelper(keyText));
+        // keyinHandler(normalizeOperatorsHelper(keyText));
         // if (keyText.trim() === "=") {
         //   if (!mathExp.endsWith(" ") && !mathExp.endsWith(".")) {
         //     getComputedValue(mathExp);

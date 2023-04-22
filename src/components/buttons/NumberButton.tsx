@@ -3,12 +3,12 @@ import BaseButton from "./BaseButton";
 
 type Props = {
   className?: string;
-  value: number | string;
+  value: string;
 };
 
 const NumberButtonJSX = ({ className, value }: Props) => (
   <BaseButton
-    className={`${className} ${value === 0 && "double-width"}`}
+    className={`${className} ${value === "0" && "double-width"}`}
     value={value}
   />
 );

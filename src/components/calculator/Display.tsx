@@ -2,19 +2,12 @@ import styled from "@emotion/styled";
 
 type Props = {
   className?: string;
-  content: string;
+  content: string | number;
   type: string;
 };
 
 const DisplayJSX = ({ className, content, type }: Props) => {
-  return (
-    <input
-      className={`${className} ${type}`}
-      type="text"
-      value={content}
-      readOnly={true}
-    ></input>
-  );
+  return <output className={`${className} ${type}`}>{content}</output>;
 };
 
 const Display = styled(DisplayJSX)`
