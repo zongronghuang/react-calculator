@@ -287,13 +287,15 @@ describe("[Get result from math expressions]", () => {
     );
 
     const numOfRandomNums = 30;
-    const random1 = Array.from(
-      { length: numOfRandomNums },
-      (_, i) => Math.random() * (i + 10)
+    const random1 = Array.from({ length: numOfRandomNums }, (_, i) =>
+      Math.random() >= 0.5
+        ? Math.random() * (i + 10)
+        : Math.random() * -(i + 10)
     );
-    const random2 = Array.from(
-      { length: numOfRandomNums },
-      (_, i) => Math.random() * -(i + 10)
+    const random2 = Array.from({ length: numOfRandomNums }, (_, i) =>
+      Math.random() >= 0.5
+        ? Math.random() * (i + 10)
+        : Math.random() * -(i + 10)
     );
     const random3 = Array.from({ length: numOfRandomNums }, (_, i) =>
       Math.random() >= 0.5 ? Math.random() * (i + 1) : Math.random() * -(i + 1)
@@ -303,33 +305,66 @@ describe("[Get result from math expressions]", () => {
       expect(
         +calculator(`${random1[i]} + ${random2[i]} + ${random3[i]} = `)
       ).toBeCloseTo(random1[i] + random2[i] + random3[i]);
+
       expect(
         +calculator(`${random1[i]} - ${random2[i]} + ${random3[i]} = `)
       ).toBeCloseTo(random1[i] - random2[i] + random3[i]);
+
       expect(
         +calculator(`${random1[i]} + ${random2[i]} - ${random3[i]} = `)
       ).toBeCloseTo(random1[i] + random2[i] - random3[i]);
+
       expect(
         +calculator(`${random1[i]} - ${random2[i]} - ${random3[i]} = `)
       ).toBeCloseTo(random1[i] - random2[i] - random3[i]);
+
       expect(
         +calculator(`${random1[i]} + ${random2[i]} x ${random3[i]} = `)
       ).toBeCloseTo(random1[i] + random2[i] * random3[i]);
+
+      expect(
+        +calculator(`${random1[i]} x ${random2[i]} + ${random3[i]} = `)
+      ).toBeCloseTo(random1[i] * random2[i] + random3[i]);
+
+      expect(
+        +calculator(`${random1[i]} - ${random2[i]} x ${random3[i]} = `)
+      ).toBeCloseTo(random1[i] - random2[i] * random3[i]);
+
       expect(
         +calculator(`${random1[i]} x ${random2[i]} - ${random3[i]} = `)
       ).toBeCloseTo(random1[i] * random2[i] - random3[i]);
+
       expect(
         +calculator(`${random1[i]} + ${random2[i]} ÷ ${random3[i]} = `)
       ).toBeCloseTo(random1[i] + random2[i] / random3[i]);
-      expect(
-        +calculator(`${random1[i]} ÷ ${random2[i]} x ${random3[i]} = `)
-      ).toBeCloseTo((random1[i] / random2[i]) * random3[i]);
+
       expect(
         +calculator(`${random1[i]} ÷ ${random2[i]} + ${random3[i]} = `)
       ).toBeCloseTo(random1[i] / random2[i] + random3[i]);
+
       expect(
         +calculator(`${random1[i]} - ${random2[i]} ÷ ${random3[i]} = `)
       ).toBeCloseTo(random1[i] - random2[i] / random3[i]);
+
+      expect(
+        +calculator(`${random1[i]} ÷ ${random2[i]} - ${random3[i]} = `)
+      ).toBeCloseTo(random1[i] / random2[i] - random3[i]);
+
+      expect(
+        +calculator(`${random1[i]} x ${random2[i]} x ${random3[i]} = `)
+      ).toBeCloseTo(random1[i] * random2[i] * random3[i]);
+
+      expect(
+        +calculator(`${random1[i]} x ${random2[i]} ÷ ${random3[i]} = `)
+      ).toBeCloseTo((random1[i] * random2[i]) / random3[i]);
+
+      expect(
+        +calculator(`${random1[i]} ÷ ${random2[i]} ÷ ${random3[i]} = `)
+      ).toBeCloseTo(random1[i] / random2[i] / random3[i]);
+
+      expect(
+        +calculator(`${random1[i]} ÷ ${random2[i]} x ${random3[i]} = `)
+      ).toBeCloseTo((random1[i] / random2[i]) * random3[i]);
     }
   });
 });
