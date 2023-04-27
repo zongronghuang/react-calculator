@@ -17,8 +17,8 @@ const ControlKeysJSX = ({
 Props) => {
   return (
     <div className={className}>
-      {controls.map((control) => (
-        <ControlButton value={control} />
+      {controls.map((control, id) => (
+        <ControlButton key={id} value={control} />
       ))}
       {/* {console.log("[Keypad Controls] render")} */}
     </div>

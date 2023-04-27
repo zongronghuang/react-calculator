@@ -11,8 +11,8 @@ type Props = {
 const NumberKeysJSX = ({ className }: Props) => {
   return (
     <div className={className}>
-      {digits.map((digit) => (
-        <NumberButton value={digit} />
+      {digits.map((digit, id) => (
+        <NumberButton key={id} value={digit} />
       ))}
       {/* {console.log("[Keypad Numbers] render")} */}
     </div>

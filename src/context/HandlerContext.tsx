@@ -1,20 +1,23 @@
 import { createContext, useState } from "react";
 import { combineMathExp } from "../utils/input";
+import { calculator } from "../utils/output";
 
 type Context = {
   mathExp: string;
-  calculatedValue: number;
+  calculatedValue: string;
   setMathExp: React.Dispatch<React.SetStateAction<string>>;
-  setCalculatedValue: React.Dispatch<React.SetStateAction<number>>;
+  setCalculatedValue: React.Dispatch<React.SetStateAction<string>>;
   combineMathExp: (baseExp: string, input: string) => string;
+  calculator: (exp: string) => string | undefined;
 };
 
 const HandlerContext = createContext<Context>({
   mathExp: "",
-  calculatedValue: 0,
+  calculatedValue: "",
   setMathExp: () => {},
   setCalculatedValue: () => {},
   combineMathExp,
+  calculator,
 });
 
 type Props = {
@@ -23,7 +26,7 @@ type Props = {
 
 const HandlerContextProvider = (props: Props) => {
   const [mathExp, setMathExp] = useState("0");
-  const [calculatedValue, setCalculatedValue] = useState(0);
+  const [calculatedValue, setCalculatedValue] = useState("0");
 
   return (
     <HandlerContext.Provider
@@ -33,6 +36,7 @@ const HandlerContextProvider = (props: Props) => {
         setMathExp,
         setCalculatedValue,
         combineMathExp,
+        calculator,
       }}
     >
       {props.children}

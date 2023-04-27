@@ -1,7 +1,7 @@
 // 基本運算
-function calculate(
+function miniCalculator(
   num1: string | number,
-  operator: "+" | "-" | "*" | "/",
+  operator: "+" | "-" | "x" | "÷",
   num2: string | number
 ) {
   const operand1 = +num1;
@@ -9,28 +9,28 @@ function calculate(
   const operations = {
     "+": () => operand1 + operand2,
     "-": () => operand1 - operand2,
-    "*": () => operand1 * operand2,
-    "/": () => operand1 / operand2,
+    "x": () => operand1 * operand2,
+    "÷": () => operand1 / operand2,
   };
 
   return operations[operator]();
 }
 
 function getLocalProduct(arr: (string | number | null)[]) {
-  if (!arr.includes("*") && !arr.includes("/")) {
+  if (!arr.includes("x") && !arr.includes("÷")) {
     return [...arr];
   }
 
   const tempArr = [...arr];
   for (let i = 0; i < tempArr.length; i++) {
-    const hasOperators = tempArr[i + 1] === "*" || tempArr[i + 1] === "/";
+    const hasOperators = tempArr[i + 1] === "x" || tempArr[i + 1] === "÷";
     const isValidExp =
       tempArr[i] !== null && hasOperators && tempArr[i + 2] !== null;
 
     if (isValidExp) {
-      tempArr[i + 2] = calculate(
+      tempArr[i + 2] = miniCalculator(
         tempArr[i] as string | number,
-        tempArr[i + 1] as "*" | "/",
+        tempArr[i + 1] as "x" | "÷",
         tempArr[i + 2] as string | number
       );
       tempArr[i] = null;
@@ -38,7 +38,7 @@ function getLocalProduct(arr: (string | number | null)[]) {
     }
   }
 
-  return arr.filter((n) => n !== null);
+  return tempArr.filter((n) => n !== null);
 }
 
 function getLocalSum(arr: (string | number | null)[]) {
@@ -53,7 +53,7 @@ function getLocalSum(arr: (string | number | null)[]) {
       tempArr[i] !== null && hasOperators && tempArr[i + 2] !== null;
 
     if (isValidExp) {
-      tempArr[i + 2] = calculate(
+      tempArr[i + 2] = miniCalculator(
         tempArr[i] as string | number,
         tempArr[i + 1] as "+" | "-",
         tempArr[i + 2] as string | number
@@ -67,35 +67,62 @@ function getLocalSum(arr: (string | number | null)[]) {
 }
 
 // 多項式運算
-function parseExpressionToNumber(exp: string) {
-  const arr = exp.split(" ");
-  return getLocalSum(getLocalProduct(arr)); // 先乘除，後加減
+function mathExpParser(exp: string) {
+  return exp
+    .trim()
+    .split(" ")
+    .filter((segment) => segment !== "=");
 }
 
 function isWithinBounds(value: number) {
   const upperBound = Math.pow(2, 32);
   const lowerBound = -Infinity;
-
   return value < upperBound && value > lowerBound;
 }
 
-function normalizeExpression(exp: string) {
-  return exp.replaceAll("x", "*").replaceAll("÷", "/");
+function isCalculatable(exp: string) {
+  return exp.includes("=");
 }
 
-function compute(exp: string) {
-  const mathExpression = normalizeExpression(exp);
-  const result = parseExpressionToNumber(mathExpression) as number;
+function roundResult(number: number, maxNumOfDecimals: number) {
+  const validNumOfDecimals =
+    maxNumOfDecimals >= 0 &&
+    maxNumOfDecimals <= 10 &&
+    Number.isInteger(maxNumOfDecimals);
 
-  return isWithinBounds(result) ? result : "NOT A NUMBER";
+  if (!validNumOfDecimals) {
+    throw new Error("maxNumOfDecimals must be an integer between 0 and 10");
+  }
+
+  let rounded = number.toFixed(maxNumOfDecimals);
+
+  while (rounded.endsWith("0") || rounded.endsWith(".")) {
+    rounded = rounded.slice(0, -1);
+  }
+
+  return rounded;
+}
+
+function calculator(exp: string) {
+  if (!isCalculatable(exp)) {
+    return "";
+  }
+
+  const parsed = mathExpParser(exp);
+  const result = getLocalSum(getLocalProduct(parsed)) as number; // 先乘除，後加減
+
+  // console.log({ parsed, result });
+
+  return isWithinBounds(result) ? roundResult(result, 10) : "NOT A NUMBER";
 }
 
 export {
-  calculate,
-  parseExpressionToNumber,
+  miniCalculator,
+  mathExpParser,
   getLocalProduct,
   getLocalSum,
   isWithinBounds,
-  normalizeExpression,
-  compute,
+  calculator,
+  isCalculatable,
+  roundResult,
 };

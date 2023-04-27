@@ -10,8 +10,8 @@ type Props = {
 const OperatorKeysJSX = ({ className }: Props) => {
   return (
     <div className={className}>
-      {mathOperators.map((operator) => (
-        <MathOperatorButton value={operator} />
+      {mathOperators.map((operator, id) => (
+        <MathOperatorButton key={id} value={operator} />
       ))}
     </div>
   );

@@ -15,7 +15,7 @@ import NumberKeys from "../components/calculator/NumberKeys";
 import OperatorKeys from "../components/calculator/OperatorKeys";
 
 import useKeyboardInput from "../hooks/useKeyboardInput";
-import { compute } from "../utils/output";
+import { isCalculatable } from "../utils/output";
 import { combineMathExp } from "../utils/input";
 
 type Props = {
@@ -23,7 +23,8 @@ type Props = {
 };
 
 const CalculatorJSX = ({ className }: Props, ref: Ref<HTMLDivElement>) => {
-  const { mathExp, calculatedValue } = useContext(HandlerContext);
+  const { mathExp, calculatedValue, setCalculatedValue, calculator } =
+    useContext(HandlerContext);
 
   // const getComputedValue = (mathExp: string) => {
   //   console.log("getComputedValue", { mathExp });
@@ -77,6 +78,13 @@ const CalculatorJSX = ({ className }: Props, ref: Ref<HTMLDivElement>) => {
   //     setComputedValue((prevValue) => "");
   //   }
   // }, [mathExp]);
+
+  useEffect(() => {
+    const result = calculator(mathExp);
+    if (result) {
+      setCalculatedValue(result);
+    }
+  }, [mathExp]);
 
   return (
     <div className={`${className} calculator-container`} ref={ref}>

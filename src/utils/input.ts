@@ -56,7 +56,7 @@ function addDecimalDot(baseExp: string) {
 }
 
 function addOperator(baseExp: string, operator: string) {
-  if (!baseExp) {
+  if (!baseExp || baseExp.includes("=")) {
     return baseExp;
   }
 
@@ -64,9 +64,9 @@ function addOperator(baseExp: string, operator: string) {
   const lastSegment = segments.at(-1) as string;
   const operators = ["+", "-", "x", "÷", "="];
 
-  if (lastSegment === "=") {
-    return baseExp;
-  }
+  // if (lastSegment === "=") {
+  //   return baseExp;
+  // }
 
   if (operators.includes(lastSegment)) {
     segments[segments.length - 1] = operator;
