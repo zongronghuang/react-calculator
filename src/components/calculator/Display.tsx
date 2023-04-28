@@ -15,6 +15,7 @@ const Display = styled(DisplayJSX)`
   height: 6.4rem;
   border: none;
   padding: 0 1.2rem;
+  font-family: "Space Grotesk", sans-serif;
   font-size: 4.4rem;
   text-align: right;
   background-color: aquamarine;
