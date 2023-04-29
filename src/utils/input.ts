@@ -1,7 +1,7 @@
 function combineMathExp(baseExp: string, input: string) {
   switch (input) {
     case "AC":
-      return clearAll(baseExp);
+      return clearAllMathExp(baseExp);
     case "C":
       return clearLastInput(baseExp);
     case "+":
@@ -64,10 +64,6 @@ function addOperator(baseExp: string, operator: string) {
   const lastSegment = segments.at(-1) as string;
   const operators = ["+", "-", "x", "÷", "="];
 
-  // if (lastSegment === "=") {
-  //   return baseExp;
-  // }
-
   if (operators.includes(lastSegment)) {
     segments[segments.length - 1] = operator;
     return [...segments, ""].join(" ");
@@ -105,7 +101,7 @@ function addNumber(baseExp: string, input: string) {
   return baseExp + input;
 }
 
-function clearAll(baseExp: string) {
+function clearAllMathExp(baseExp: string) {
   return "0";
 }
 
@@ -133,6 +129,6 @@ export {
   addOperator,
   addNumber,
   combineMathExp,
-  clearAll,
+  clearAllMathExp,
   clearLastInput,
 };

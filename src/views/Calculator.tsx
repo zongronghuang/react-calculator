@@ -1,11 +1,4 @@
-import {
-  useState,
-  useContext,
-  forwardRef,
-  useEffect,
-  useCallback,
-  Ref,
-} from "react";
+import { useContext, forwardRef, useEffect, Ref } from "react";
 import styled from "@emotion/styled";
 import { HandlerContext } from "../context/HandlerContext";
 
@@ -13,10 +6,6 @@ import Display from "../components/calculator/Display";
 import ControlKeys from "../components/calculator/ControlKeys";
 import NumberKeys from "../components/calculator/NumberKeys";
 import OperatorKeys from "../components/calculator/OperatorKeys";
-
-import useKeyboardInput from "../hooks/useKeyboardInput";
-import { isCalculatable } from "../utils/output";
-import { combineMathExp } from "../utils/input";
 
 type Props = {
   className?: string;
@@ -26,60 +15,13 @@ const CalculatorJSX = ({ className }: Props, ref: Ref<HTMLDivElement>) => {
   const { mathExp, calculatedValue, setCalculatedValue, calculator } =
     useContext(HandlerContext);
 
-  // const getComputedValue = (mathExp: string) => {
-  //   console.log("getComputedValue", { mathExp });
-  //   let result = compute(mathExp);
-  //   setComputedValue(result.toString());
-  // };
-
-  // const clearAll = () => {
-  //   setMathExp((prevExp) => {
-  //     return "0";
-  //   });
-
-  //   setMathExp(" ");
-  //   setComputedValue((prevValue) => {
-  //     return "";
-  //   });
-  // };
-
-  // const clearCurrentInput = () => {
-  //   setComputedValue((prevValue) => {
-  //     return "";
-  //   });
-  //   setMathExp((prevmathExp) => {
-  //     return clearCurrentInputHelper(prevmathExp);
-  //   });
-  // };
-
-  // const keyinHandler = (btnText: string) => {
-  //   setMathExp((prevmathExp) => {
-  //     console.log("KEYIN handler", { prevmathExp, btnText });
-  //     return keyinHelper(prevmathExp, btnText);
-  //   });
-  // };
-
-  // useKeyboardInput({
-  //   keyinHandler,
-  //   clearCurrentInput,
-  //   mathExp,
-  // });
-
-  // useEffect(() => {
-  //   if (mathExp.endsWith(" = ")) {
-  //     getComputedValue(mathExp);
-  //   }
-  // }, [mathExp]);
-
-  // useEffect(() => {
-  //   // 如果 mathExp 上只有數字 => 未進行計算 => computedValue 不顯示
-  //   // 用來處理計算完一個算式後，再進行其他計算時，上一個算式的 computedValue 應該移除
-  //   if (!Number.isNaN(+mathExp)) {
-  //     setComputedValue((prevValue) => "");
-  //   }
-  // }, [mathExp]);
-
   useEffect(() => {
+    // 按下 AC 時，算式為 "0"，值同時設為 "0"
+    if (mathExp === "0") {
+      setCalculatedValue("0");
+      return;
+    }
+
     const result = calculator(mathExp);
     if (result) {
       setCalculatedValue(result);
@@ -89,25 +31,15 @@ const CalculatorJSX = ({ className }: Props, ref: Ref<HTMLDivElement>) => {
   return (
     <div className={`${className} calculator-container`} ref={ref}>
       <div className="calculator">
-        {/* {console.log("[Calculator] render")} */}
-
         <div className="calculator--displays">
-          {/* {console.log("[Display] render")} */}
-          <Display content={mathExp} type="mathExp"></Display>
-          <Display content={calculatedValue} type="result"></Display>
+          <Display content={mathExp} type="mathExp" />
+          <Display content={calculatedValue} type="result" />
         </div>
 
         <div className="calculator--keypad">
-          <ControlKeys
-          // clearAll={clearAll}
-          // clearCurrentInput={clearCurrentInput}
-          />
-
+          <ControlKeys />
           <NumberKeys />
-
-          <OperatorKeys
-          // getComputedValue={getComputedValue}
-          />
+          <OperatorKeys />
         </div>
       </div>
     </div>

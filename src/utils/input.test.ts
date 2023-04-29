@@ -3,7 +3,7 @@ import {
   addDecimalDot,
   addOperator,
   addNumber,
-  clearAll,
+  clearAllMathExp,
   clearLastInput,
   combineMathExp,
 } from "./input";
@@ -439,7 +439,7 @@ describe("[Make valid math expressions]", () => {
     ];
 
     const expected = Array(baseExps.length).fill("0");
-    expect(baseExps.map((exp) => clearAll(exp))).toEqual(expected);
+    expect(baseExps.map((exp) => clearAllMathExp(exp))).toEqual(expected);
   });
 
   test("Clear last input", () => {

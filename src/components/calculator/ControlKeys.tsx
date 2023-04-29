@@ -5,16 +5,9 @@ const controls = ["C", "AC", "+/-"];
 
 type Props = {
   className?: string;
-  // clearAll: () => void;
-  // clearCurrentInput: () => void;
 };
 
-const ControlKeysJSX = ({
-  className,
-}: // clearAll,
-// clearCurrentInput,
-// negateLastNumber,
-Props) => {
+const ControlKeysJSX = ({ className }: Props) => {
   return (
     <div className={className}>
       {controls.map((control, id) => (
