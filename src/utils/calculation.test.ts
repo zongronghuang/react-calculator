@@ -7,7 +7,7 @@ import {
   calculator,
   isCalculatable,
   roundResult,
-} from "./output";
+} from "./calculation";
 
 describe("[Get result from math expressions]", () => {
   test("Result should be within bounds", () => {

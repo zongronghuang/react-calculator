@@ -6,7 +6,7 @@ type Props = {
   children: ReactNode;
 };
 
-const BackdropJSX = (
+const BaseBackdrop = (
   { className, children }: Props,
   ref: Ref<HTMLDivElement>
 ) => (
@@ -16,7 +16,7 @@ const BackdropJSX = (
   </div>
 );
 
-const Backdrop = styled(forwardRef(BackdropJSX))`
+const Backdrop = styled(forwardRef(BaseBackdrop))`
   position: relative;
   display: flex;
   justify-content: center;

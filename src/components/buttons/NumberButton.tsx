@@ -6,14 +6,14 @@ type Props = {
   value: string;
 };
 
-const NumberButtonJSX = ({ className, value }: Props) => (
+const BaseNumberButton = ({ className, value }: Props) => (
   <BaseButton
     className={`${className} ${value === "0" && "double-width"}`}
     value={value}
   />
 );
 
-const NumberButton = styled(NumberButtonJSX)`
+const NumberButton = styled(BaseNumberButton)`
   width: 100%;
   height: 100%;
   background-color: #7f8c8d;

@@ -7,7 +7,7 @@ type Props = {
   className?: string;
 };
 
-const OperatorKeysJSX = ({ className }: Props) => {
+const BaseOperatorKeys = ({ className }: Props) => {
   return (
     <div className={className}>
       {mathOperators.map((operator, id) => (
@@ -17,7 +17,7 @@ const OperatorKeysJSX = ({ className }: Props) => {
   );
 };
 
-const OperatorKeys = styled(OperatorKeysJSX)`
+const OperatorKeys = styled(BaseOperatorKeys)`
   grid-column: 4 / 5;
   grid-row: 1 / -1;
 

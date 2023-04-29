@@ -1,14 +1,14 @@
 import { useContext } from "react";
 import styled from "@emotion/styled";
-import { HandlerContext } from "../../context/HandlerContext";
+import { CalculatorContext } from "../../context/CalculatorContext";
 
 type Props = {
   className?: string;
   value: string;
 };
 
-const BaseButtonJSX = ({ className, value }: Props) => {
-  const { combineMathExp, setMathExp } = useContext(HandlerContext);
+const BaseButton = ({ className, value }: Props) => {
+  const { combineMathExp, setMathExp } = useContext(CalculatorContext);
 
   return (
     <button
@@ -21,7 +21,7 @@ const BaseButtonJSX = ({ className, value }: Props) => {
   );
 };
 
-const BaseButton = styled(BaseButtonJSX)`
+const StyledBaseButton = styled(BaseButton)`
   width: 25%;
   height: 25%;
   border: none;
@@ -32,4 +32,4 @@ const BaseButton = styled(BaseButtonJSX)`
   outline: 1px solid black;
 `;
 
-export default BaseButton;
+export default StyledBaseButton;

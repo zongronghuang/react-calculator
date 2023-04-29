@@ -6,7 +6,7 @@ import {
   clearAllMathExp,
   clearLastInput,
   combineMathExp,
-} from "./input";
+} from "./mathExps";
 
 describe("[Make valid math expressions]", () => {
   test("+/- turns last number opposite", () => {

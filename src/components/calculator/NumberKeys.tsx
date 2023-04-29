@@ -8,7 +8,7 @@ type Props = {
   // keyinHandler: (btnText: string) => void;
 };
 
-const NumberKeysJSX = ({ className }: Props) => {
+const BaseNumberKeys = ({ className }: Props) => {
   return (
     <div className={className}>
       {digits.map((digit, id) => (
@@ -19,7 +19,7 @@ const NumberKeysJSX = ({ className }: Props) => {
   );
 };
 
-const NumberKeys = styled(NumberKeysJSX)`
+const NumberKeys = styled(BaseNumberKeys)`
   grid-column: 1 / 4;
   grid-row: 2 / 6;
 

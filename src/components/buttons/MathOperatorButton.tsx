@@ -6,11 +6,11 @@ type Props = {
   value: string;
 };
 
-const MathOperatorButtonJSX = ({ className, value }: Props) => (
+const BaseMathOperatorButton = ({ className, value }: Props) => (
   <BaseButton className={className} value={value} />
 );
 
-const MathOperatorButton = styled(MathOperatorButtonJSX)`
+const MathOperatorButton = styled(BaseMathOperatorButton)`
   flex-grow: 1;
   width: 100%;
   background-color: orange;

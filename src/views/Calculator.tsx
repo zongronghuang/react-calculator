@@ -1,6 +1,6 @@
 import { useContext, forwardRef, useEffect, Ref } from "react";
 import styled from "@emotion/styled";
-import { HandlerContext } from "../context/HandlerContext";
+import { CalculatorContext } from "../context/CalculatorContext";
 
 import Display from "../components/calculator/Display";
 import ControlKeys from "../components/calculator/ControlKeys";
@@ -11,9 +11,9 @@ type Props = {
   className?: string;
 };
 
-const CalculatorJSX = ({ className }: Props, ref: Ref<HTMLDivElement>) => {
+const BaseCalculator = ({ className }: Props, ref: Ref<HTMLDivElement>) => {
   const { mathExp, calculatedValue, setCalculatedValue, calculator } =
-    useContext(HandlerContext);
+    useContext(CalculatorContext);
 
   useEffect(() => {
     // 按下 AC 時，算式為 "0"，值同時設為 "0"
@@ -46,7 +46,7 @@ const CalculatorJSX = ({ className }: Props, ref: Ref<HTMLDivElement>) => {
   );
 };
 
-const Calculator = styled(forwardRef(CalculatorJSX))`
+const Calculator = styled(forwardRef(BaseCalculator))`
   width: 50rem;
   height: 50rem;
   overflow: hidden;

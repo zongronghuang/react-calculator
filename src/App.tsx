@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import "./App.css";
-import { HandlerContextProvider } from "./context/HandlerContext";
+import { CalculatorContextProvider } from "./context/CalculatorContext";
 import Calculator from "./views/Calculator";
 import Backdrop from "./components/Backdrop";
 import useDragAndDrop from "./hooks/useDragAndDrop";
@@ -17,9 +17,9 @@ function App() {
   return (
     <div className="App">
       <Backdrop ref={backdropRef}>
-        <HandlerContextProvider>
+        <CalculatorContextProvider>
           <Calculator ref={calculatorRef} />
-        </HandlerContextProvider>
+        </CalculatorContextProvider>
       </Backdrop>
     </div>
   );

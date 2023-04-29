@@ -6,11 +6,11 @@ type Props = {
   value: string;
 };
 
-const ControlButtonJSX = ({ className, value }: Props) => (
+const BaseControlButton = ({ className, value }: Props) => (
   <BaseButton className={className} value={value} />
 );
 
-const ControlButton = styled(ControlButtonJSX)`
+const ControlButton = styled(BaseControlButton)`
   width: 33.33%;
   height: 100%;
   background-color: #5d6d7e;

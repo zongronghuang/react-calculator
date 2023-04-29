@@ -7,7 +7,7 @@ type Props = {
   className?: string;
 };
 
-const ControlKeysJSX = ({ className }: Props) => {
+const BaseControlKeys = ({ className }: Props) => {
   return (
     <div className={className}>
       {controls.map((control, id) => (
@@ -18,7 +18,7 @@ const ControlKeysJSX = ({ className }: Props) => {
   );
 };
 
-const ControlKeys = styled(ControlKeysJSX)`
+const ControlKeys = styled(BaseControlKeys)`
   grid-column: 1 / 4;
 `;
 
