@@ -21,7 +21,7 @@ const BaseButton = ({ className, value }: Props) => {
   );
 };
 
-const StyledBaseButton = styled(BaseButton)`
+const Button = styled(BaseButton)`
   width: 25%;
   height: 25%;
   border: none;
@@ -32,4 +32,4 @@ const StyledBaseButton = styled(BaseButton)`
   outline: 1px solid black;
 `;
 
-export default StyledBaseButton;
+export default Button;

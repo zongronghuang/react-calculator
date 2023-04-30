@@ -1,6 +1,9 @@
-import { useRef } from "react";
+import { useRef, useContext } from "react";
 import "./App.css";
-import { CalculatorContextProvider } from "./context/CalculatorContext";
+import {
+  CalculatorContextProvider,
+  CalculatorContext,
+} from "./context/CalculatorContext";
 import Calculator from "./views/Calculator";
 import Backdrop from "./components/Backdrop";
 import useDragAndDrop from "./hooks/useDragAndDrop";
@@ -8,6 +11,8 @@ import useDragAndDrop from "./hooks/useDragAndDrop";
 function App() {
   const backdropRef = useRef(null);
   const calculatorRef = useRef(null);
+  const { setMathExp, combineMathExp, keyToText } =
+    useContext(CalculatorContext);
 
   useDragAndDrop({
     dragItemRef: calculatorRef,
@@ -15,13 +20,13 @@ function App() {
   });
 
   return (
-    <div className="App">
-      <Backdrop ref={backdropRef}>
-        <CalculatorContextProvider>
+    <CalculatorContextProvider>
+      <div className="App">
+        <Backdrop ref={backdropRef}>
           <Calculator ref={calculatorRef} />
-        </CalculatorContextProvider>
-      </Backdrop>
-    </div>
+        </Backdrop>
+      </div>
+    </CalculatorContextProvider>
   );
 }
 

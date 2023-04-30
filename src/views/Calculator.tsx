@@ -12,8 +12,16 @@ type Props = {
 };
 
 const BaseCalculator = ({ className }: Props, ref: Ref<HTMLDivElement>) => {
-  const { mathExp, calculatedValue, setCalculatedValue, calculator } =
-    useContext(CalculatorContext);
+  const {
+    mathExp,
+    calculatedValue,
+    setCalculatedValue,
+    calculator,
+    setMathExp,
+    combineMathExp,
+    keyToText,
+    setActiveKey,
+  } = useContext(CalculatorContext);
 
   useEffect(() => {
     // 按下 AC 時，算式為 "0"，值同時設為 "0"
@@ -27,6 +35,24 @@ const BaseCalculator = ({ className }: Props, ref: Ref<HTMLDivElement>) => {
       setCalculatedValue(result);
     }
   }, [mathExp]);
+
+  // 全域監聽 keydown 事件
+  function keydownHandler(event: KeyboardEvent) {
+    const activeKey = keyToText(event);
+    setMathExp((prevExp) => combineMathExp(prevExp, activeKey));
+    setActiveKey(activeKey);
+
+    // 重設 activeKey 值，能讓按鈕重新使用 animation
+    setTimeout(() => {
+      setActiveKey("");
+    }, 100);
+  }
+  useEffect(() => {
+    document.addEventListener("keydown", keydownHandler);
+    return () => {
+      document.removeEventListener("keydown", keydownHandler);
+    };
+  }, []);
 
   return (
     <div className={`${className} calculator-container`} ref={ref}>

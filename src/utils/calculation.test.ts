@@ -137,6 +137,13 @@ describe("[Get result from math expressions]", () => {
 
   test("Get local sum", () => {
     const exps = [
+      "0",
+      "1",
+      "0.2",
+      "-0.2",
+      "-1",
+      "999",
+      "-999",
       "0 + 0",
       "0 + 1",
       "0 + -1",

@@ -43,7 +43,7 @@ function getLocalProduct(arr: (string | number | null)[]) {
 
 function getLocalSum(arr: (string | number | null)[]) {
   if (arr.length === 1) {
-    return arr[0];
+    return +arr[0]!;
   }
 
   const tempArr = [...arr];
