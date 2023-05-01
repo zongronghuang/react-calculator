@@ -22,9 +22,8 @@ const shortcutMap: { [key: string]: string } = {
   "Clear": "C",
 };
 
-export default function keyToText(event: KeyboardEvent) {
-  const { altKey, key } = event;
-  console.log({ altKey, key });
+export default function keyToText(key: string, altKey: boolean) {
+  // console.log({ altKey, key });
   const isACPressed = altKey && key === "Ç";
   const isNegatorPressed = altKey && key === "-";
 

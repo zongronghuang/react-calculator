@@ -1,11 +1,10 @@
-import {
+import combineMathExp, {
   turnLastNumOpposite,
   addDecimalDot,
   addOperator,
   addNumber,
   clearAllMathExp,
   clearLastInput,
-  combineMathExp,
 } from "./mathExps";
 
 describe("[Make valid math expressions]", () => {

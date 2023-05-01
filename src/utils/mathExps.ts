@@ -1,24 +1,3 @@
-function combineMathExp(baseExp: string, input: string) {
-  switch (input) {
-    case "AC":
-      return clearAllMathExp(baseExp);
-    case "C":
-      return clearLastInput(baseExp);
-    case "+":
-    case "-":
-    case "x":
-    case "÷":
-    case "=":
-      return addOperator(baseExp, input);
-    case "+/-":
-      return turnLastNumOpposite(baseExp);
-    case ".":
-      return addDecimalDot(baseExp);
-    default:
-      return addNumber(baseExp, input);
-  }
-}
-
 function turnLastNumOpposite(baseExp: string) {
   if (!baseExp || baseExp.includes("=")) {
     return baseExp;
@@ -128,7 +107,27 @@ export {
   addDecimalDot,
   addOperator,
   addNumber,
-  combineMathExp,
   clearAllMathExp,
   clearLastInput,
 };
+
+export default function combineMathExp(baseExp: string, input: string) {
+  switch (input) {
+    case "AC":
+      return clearAllMathExp(baseExp);
+    case "C":
+      return clearLastInput(baseExp);
+    case "+":
+    case "-":
+    case "x":
+    case "÷":
+    case "=":
+      return addOperator(baseExp, input);
+    case "+/-":
+      return turnLastNumOpposite(baseExp);
+    case ".":
+      return addDecimalDot(baseExp);
+    default:
+      return addNumber(baseExp, input);
+  }
+}

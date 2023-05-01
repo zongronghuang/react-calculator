@@ -38,7 +38,8 @@ const BaseCalculator = ({ className }: Props, ref: Ref<HTMLDivElement>) => {
 
   // 全域監聽 keydown 事件
   function keydownHandler(event: KeyboardEvent) {
-    const activeKey = keyToText(event);
+    const { key, altKey } = event;
+    const activeKey = keyToText(key, altKey);
     setMathExp((prevExp) => combineMathExp(prevExp, activeKey));
     setActiveKey(activeKey);
 

@@ -103,7 +103,17 @@ function roundResult(number: number, maxNumOfDecimals: number) {
   return rounded;
 }
 
-function calculator(exp: string) {
+export {
+  miniCalculator,
+  mathExpParser,
+  getLocalProduct,
+  getLocalSum,
+  isWithinBounds,
+  isCalculatable,
+  roundResult,
+};
+
+export default function calculator(exp: string) {
   if (!isCalculatable(exp)) {
     return "";
   }
@@ -115,14 +125,3 @@ function calculator(exp: string) {
 
   return isWithinBounds(result) ? roundResult(result, 10) : "NOT A NUMBER";
 }
-
-export {
-  miniCalculator,
-  mathExpParser,
-  getLocalProduct,
-  getLocalSum,
-  isWithinBounds,
-  calculator,
-  isCalculatable,
-  roundResult,
-};

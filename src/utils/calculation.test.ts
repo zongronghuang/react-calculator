@@ -1,10 +1,9 @@
-import {
+import calculator, {
   getLocalProduct,
   getLocalSum,
   isWithinBounds,
   miniCalculator,
   mathExpParser,
-  calculator,
   isCalculatable,
   roundResult,
 } from "./calculation";

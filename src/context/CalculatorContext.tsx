@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
-import { combineMathExp } from "../utils/mathExps";
-import { calculator } from "../utils/calculation";
+import combineMathExp from "../utils/mathExps";
+import calculator from "../utils/calculation";
 import keyToText from "../utils/shortcuts";
 
 type Context = {
@@ -12,7 +12,7 @@ type Context = {
   setActiveKey: React.Dispatch<React.SetStateAction<string>>;
   combineMathExp: (baseExp: string, input: string) => string;
   calculator: (exp: string) => string | undefined;
-  keyToText: (event: KeyboardEvent) => string;
+  keyToText: (key: string, altKey: boolean) => string;
 };
 
 const CalculatorContext = createContext<Context>({
