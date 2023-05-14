@@ -36,23 +36,24 @@ const BaseCalculator = ({ className }: Props, ref: Ref<HTMLDivElement>) => {
     }
   }, [mathExp]);
 
-  // 全域監聽 keydown 事件
-  function keydownHandler(event: KeyboardEvent) {
-    const { key, altKey } = event;
-    const activeKey = keyToText(key, altKey);
-    setMathExp((prevExp) => combineMathExp(prevExp, activeKey));
-    setActiveKey(activeKey);
-
-    // 重設 activeKey 值，能讓按鈕重新使用 animation
-    setTimeout(() => {
-      setActiveKey("");
-    }, 100);
-  }
   useEffect(() => {
     document.addEventListener("keydown", keydownHandler);
     return () => {
       document.removeEventListener("keydown", keydownHandler);
     };
+
+    // 全域監聽 keydown 事件
+    function keydownHandler(event: KeyboardEvent) {
+      const { key, altKey } = event;
+      const activeKey = keyToText(key, altKey);
+      setMathExp((prevExp) => combineMathExp(prevExp, activeKey));
+      setActiveKey(activeKey);
+
+      // 重設 activeKey 值，能讓按鈕重新使用 animation
+      setTimeout(() => {
+        setActiveKey("");
+      }, 100);
+    }
   }, []);
 
   return (

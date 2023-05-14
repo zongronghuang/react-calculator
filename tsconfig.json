@@ -19,5 +19,5 @@
     "allowJs": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src", "./jest-setup.ts"]
 }

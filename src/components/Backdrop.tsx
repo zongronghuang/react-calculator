@@ -10,7 +10,7 @@ const BaseBackdrop = (
   { className, children }: Props,
   ref: Ref<HTMLDivElement>
 ) => (
-  <div className={className} ref={ref}>
+  <div className={className} ref={ref} data-testid="backdrop">
     {/* {console.log("[Backdrop] render")} */}
     {children}
   </div>

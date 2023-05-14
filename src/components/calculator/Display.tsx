@@ -14,7 +14,7 @@ const BaseDisplay = ({ className, content, type }: Props) => {
   useEffect(() => {
     async function copyText() {
       try {
-        await navigator.clipboard.writeText(
+        await navigator.clipboard?.writeText(
           outputRef.current!.value.replace("Copied", "")
         );
 

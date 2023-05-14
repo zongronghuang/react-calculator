@@ -5,7 +5,6 @@ const digits = ["7", "8", "9", "4", "5", "6", "1", "2", "3", "0", "."];
 
 type Props = {
   className?: string;
-  // keyinHandler: (btnText: string) => void;
 };
 
 const BaseNumberKeys = ({ className }: Props) => {
