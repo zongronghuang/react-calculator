@@ -14,7 +14,9 @@ const BaseButton = ({ className, value }: Props) => {
     <button
       className={className}
       value={value}
-      onClick={() => setMathExp((prevExp) => combineMathExp(prevExp, value))}
+      onClick={() => {
+        setMathExp((prevExp) => combineMathExp(prevExp, value));
+      }}
     >
       {value}
     </button>

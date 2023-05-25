@@ -2,8 +2,8 @@ import userEvent from "@testing-library/user-event";
 import Calculator from "../views/Calculator";
 import keyToText from "./shortcuts";
 
-describe("[Transform keyboard inputs to text]", () => {
-  test("Turn hit keys to text", () => {
+describe("[Keyboard shortcuts]", () => {
+  test("Should output numbers, not affected by alt keys", () => {
     const data: [string, boolean][] = Array.from({ length: 10 }, (_, i) => [
       `${i}`,
       Math.random() >= 0.5,
@@ -12,8 +12,10 @@ describe("[Transform keyboard inputs to text]", () => {
     expect(data.map(([key, altKey]) => keyToText(key, altKey))).toEqual(
       expected
     );
+  });
 
-    const data1: {
+  test("Should output math operators or clear outputs, according to alt keys", () => {
+    const data: {
       key: string;
       altKey: boolean;
       expected: string;
@@ -85,12 +87,14 @@ describe("[Transform keyboard inputs to text]", () => {
       },
     ];
 
-    const expected1 = data1.map((data) => data.expected);
-    expect(data1.map(({ key, altKey }) => keyToText(key, altKey))).toEqual(
-      expected1
+    const expected = data.map((data) => data.expected);
+    expect(data.map(({ key, altKey }) => keyToText(key, altKey))).toEqual(
+      expected
     );
+  });
 
-    const data2 = [
+  test("Calculator ignore irrelevant keys", () => {
+    const irrelevantKeys = [
       "a",
       "b",
       "c",
@@ -105,8 +109,12 @@ describe("[Transform keyboard inputs to text]", () => {
       "!",
       "?",
     ];
-    const expected2 = data2.map((item) => "");
-    expect(data2.map((item) => keyToText(item, true))).toEqual(expected2);
-    expect(data2.map((item) => keyToText(item, false))).toEqual(expected2);
+    const expected = irrelevantKeys.map((item) => "");
+    expect(irrelevantKeys.map((item) => keyToText(item, true))).toEqual(
+      expected
+    );
+    expect(irrelevantKeys.map((item) => keyToText(item, false))).toEqual(
+      expected
+    );
   });
 });

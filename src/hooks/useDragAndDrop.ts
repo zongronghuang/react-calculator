@@ -1,4 +1,3 @@
-import { AnyRecord } from "dns";
 import { useEffect, useRef, RefObject, DragEvent } from "react";
 
 type Params = {

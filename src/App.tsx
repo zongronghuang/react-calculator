@@ -1,4 +1,4 @@
-import { useRef, useContext } from "react";
+import { useRef } from "react";
 import "./App.css";
 import { CalculatorContextProvider } from "./context/CalculatorContext";
 import Calculator from "./views/Calculator";

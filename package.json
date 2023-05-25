@@ -23,8 +23,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest --watch",
-    "test:all": "jest --watchAll",
+    "test": "jest --watch --verbose",
+    "test:all": "jest --watchAll --verbose",
     "eject": "react-scripts eject",
     "check-types": "tsc"
   },

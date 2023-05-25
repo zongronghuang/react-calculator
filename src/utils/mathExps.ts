@@ -12,7 +12,7 @@ function turnLastNumOpposite(baseExp: string) {
 
   // 最後一項數字以小數點結尾 vs 結尾非小數點
   segments[segments.length - 1] = lastSegment.endsWith(".")
-    ? `${-parseFloat(lastSegment)}` + "."
+    ? `${-parseFloat(lastSegment)}.`
     : `${-parseFloat(lastSegment)}`;
   return segments.join(" ");
 }

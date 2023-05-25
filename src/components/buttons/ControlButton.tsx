@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import styled from "@emotion/styled";
 import { CalculatorContext } from "../../context/CalculatorContext";
 import Button from "./Button";

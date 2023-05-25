@@ -23,7 +23,6 @@ const shortcutMap: { [key: string]: string } = {
 };
 
 export default function keyToText(key: string, altKey: boolean) {
-  // console.log({ altKey, key });
   const isACPressed = altKey && key === "Ç";
   const isNegatorPressed = altKey && key === "-";
 

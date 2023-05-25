@@ -7,7 +7,7 @@ import combineMathExp, {
   clearLastInput,
 } from "./mathExps";
 
-describe("[Make valid math expressions]", () => {
+describe("[Math expressions] Input math operators", () => {
   test("+/- turns last number opposite", () => {
     const map = {
       "": "",
@@ -49,7 +49,7 @@ describe("[Make valid math expressions]", () => {
     expect(baseExps.map((exp) => turnLastNumOpposite(exp))).toEqual(expected);
   });
 
-  test("Add decimal dot", () => {
+  test("Add a decimal dot", () => {
     const map = {
       "": "",
       "1": "1.",
@@ -256,7 +256,9 @@ describe("[Make valid math expressions]", () => {
 
     expect(baseExps.map((exp) => addOperator(exp, operator))).toEqual(expected);
   });
+});
 
+describe("[Math expressions] Input numbers", () => {
   test("Add number 0", () => {
     const num = "0";
     const map = {
@@ -388,7 +390,9 @@ describe("[Make valid math expressions]", () => {
     const expected = Object.values(map);
     expect(baseExps.map((exp) => addNumber(exp, num))).toEqual(expected);
   });
+});
 
+describe("[Math expressions] Clear last input and all input", () => {
   test("Clear all input", () => {
     const baseExps = [
       "0",
@@ -492,8 +496,10 @@ describe("[Make valid math expressions]", () => {
     const expected = Object.values(map);
     expect(baseExps.map((exp) => clearLastInput(exp))).toEqual(expected);
   });
+});
 
-  test("[ALL] Combine math expressions with any input", () => {
+describe("[Math expressions] All functions", () => {
+  test("Combine math expressions with any input", () => {
     let input = "";
     let map = {};
     let baseExps = [];
